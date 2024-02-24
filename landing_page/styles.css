@@ -1,0 +1,36 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+ul {
+    list-style: none;
+}
+
+.header {
+    display: flex;
+}
+
+.logo {
+    /* margin-right: auto; */
+}
+
+.container1 {
+    display: flex;
+}
+
+.container2 {
+    display: flex;
+}
+
+.container3 {
+    display: flex;
+}
+
+.container4 {
+    display: flex;
+}
+
+.footer {
+    display: flex;
+}
