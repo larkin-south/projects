@@ -4,11 +4,11 @@ body {
     align-items: center;
     /* width: 100%; */
     /* height: 100%; */
-    /* flex-grow: 1; */
+    flex: 1;
     /* justify-content: stretch; */
     margin: 0;
     font-family: Roboto;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 ul {
@@ -30,7 +30,7 @@ ul {
     min-height: 75px;
     /* align-items: center; */
     /* justify-content: space-between; */
-    padding: 10px;
+    padding: 10px 0px;
     /* height: 30px; */
 }
 
@@ -43,7 +43,7 @@ ul {
 
 .container1 {
     display: flex;
-    /* flex-grow: 1; */
+    flex: 1;
     flex-direction: column;
     width: 100%;
     background-color: #1f2937;
@@ -84,6 +84,11 @@ ul {
     font-weight: 300;
 }
 
+.cat-1 {
+    display: flex;
+    padding: 50px 0;
+}
+
 .hero {
     font-size: 48px;
     font-weight: bolder;
@@ -107,9 +112,10 @@ ul {
 
 .image {
     /* flex: 1; */
-    align-items: flex-end;
+    /* align-items: flex-end; */
+    /* justify-content: flex-end; */
     margin-right: 15%;
-    margin-left: 10px;
+    margin-left: auto;
     width: 600px;
     height: 200px;
     background-color: lightgray;
@@ -123,7 +129,7 @@ ul {
     align-items: center;
     flex-direction: column;
     width: 100%;
-    padding: 35px;
+    padding: 55px 0px;
 }
 
 .heading2 {
@@ -175,12 +181,13 @@ ul {
     background-color: #e5e7eb;
     align-items: center;
     justify-content: center;
-    padding: 35px;
+    padding: 55px 0px;
 }
 
 .quote {
     font-size: 36px;
-    font-weight: italic;
+    font-weight: 300;
+    font-style: italic;
     color: #1f2937;
     width: 70%;
 }
@@ -197,9 +204,10 @@ ul {
     display: flex;
     flex: 1;
     width: 100%;
+    flex-flow: column;
     justify-content: center;
     align-items: center;
-    padding: 35px;
+    padding: 55px 0px;
 }
 
 .cta {
