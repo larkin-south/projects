@@ -1,13 +1,14 @@
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* align-items: center; */
     /* width: 100%; */
     /* height: 100%; */
-    flex: 1;
+    /* flex: 1; */
     /* justify-content: stretch; */
     margin: 0;
     font-family: Roboto;
+    /* min-height: 500vh; */
     /* overflow: hidden; */
 }
 
@@ -21,19 +22,6 @@ ul {
     /* flex: 1; */
 }
 
-.footer {
-    display: flex;
-    /* flex: 1; */
-    background-color: #1f2937;
-    flex-direction: column;
-    width: 100%;
-    min-height: 75px;
-    /* align-items: center; */
-    /* justify-content: space-between; */
-    padding: 10px 0px;
-    /* height: 30px; */
-}
-
 .head {
     display: flex;
     align-items: center;
@@ -44,11 +32,13 @@ ul {
 .container1 {
     display: flex;
     flex: 1;
+    /* min-height: 10vh; */
     flex-direction: column;
     width: 100%;
+    /* height: 100%; */
     background-color: #1f2937;
-    /* justify-content: space-around; */
-    /* align-items: center; */
+    /* justify-content: stretch; */
+    /* align-items: stretch; */
     /* padding: 50px; */
     color: white;
 }
@@ -87,6 +77,9 @@ ul {
 .cat-1 {
     display: flex;
     padding: 50px 0;
+    /* flex: 1; */
+    /* justify-content: stretch; */
+    /* align-items: stretch; */
 }
 
 .hero {
@@ -112,8 +105,8 @@ ul {
 
 .image {
     /* flex: 1; */
-    /* align-items: flex-end; */
-    /* justify-content: flex-end; */
+    /* align-items: stretch; */
+    /* justify-content: stretch; */
     margin-right: 15%;
     margin-left: auto;
     width: 600px;
@@ -124,7 +117,7 @@ ul {
 .container2 {
     display: flex;
     padding: 0;
-    /* justify-content: space-evenly; */
+    justify-content: stretch;
     flex: 1;
     align-items: center;
     flex-direction: column;
@@ -180,7 +173,7 @@ ul {
     width: 100%;
     background-color: #e5e7eb;
     align-items: center;
-    justify-content: center;
+    justify-content: stretch;
     padding: 55px 0px;
 }
 
@@ -205,7 +198,7 @@ ul {
     flex: 1;
     width: 100%;
     flex-flow: column;
-    justify-content: center;
+    justify-content: stretch;
     align-items: center;
     padding: 55px 0px;
 }
@@ -258,9 +251,19 @@ ul {
 }
 
 .footer {
-    /* display: flex; */
+    display: flex;
     align-items: center;
-    /* flex: 1; */
+    flex: 0 1 auto;
     justify-content: center;
     /* flex-direction: column; */
+    display: flex;
+    flex: 1;
+    background-color: #1f2937;
+    flex-direction: column;
+    width: 100%;
+    min-height: 75px;
+    /* align-items: center; */
+    /* justify-content: space-between; */
+    padding: 10px 0px;
+    /* height: 30px; */
 }
