@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    /* border: black 5px solid; */
+}
+
+.box {
+    border: black 5px solid;
+}
