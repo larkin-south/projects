@@ -1,10 +1,24 @@
+body {
+    /* justify-content: center; */
+    /* align-content: center; */
+    /* text-align: center; */
+    /* width: 100%; */
+}
+
 .container {
     display: flex;
-    flex-direction: row;
+    /* flex-direction: row; */
     gap: 5px;
+    width: 80%;
+    /* justify-content: space-around; */
+    /* align-items: ; */
+    flex-wrap: wrap;
+    /* margin: auto; */
     /* border: black 5px solid; */
 }
 
 .box {
     border: black 5px solid;
+    width: 10px;
+    height: 10px;
 }
