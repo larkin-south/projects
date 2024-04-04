@@ -1,22 +1,30 @@
 function size() {
     let size = prompt("Enter the size of grid you want to generate:");
 
-    return size;
+    if (size == null) {
+        size = 16;
+    }
+
+    grid(size);
 }
 
 function grid(size) {
     let container = document.getElementsByClassName("main_container");
-
-    if (size !== null) {
+    let line = document.createElement("div")
+    let box = document.createElement("div");
+       
+    if (!(line.hasChildNodes())) {
         size = 16;
     }
 
+    while (line.hasChildNodes()) {
+        line.removeChild(line.firstChild);
+    }
+
     for (let row = 0; row < size; row++) {
-        let line = document.createElement("div")
         line.classList.add("container");
 
         for (let col = 0; col < size; col++) {
-            let box = document.createElement("div");
             box.classList.add("box");
             box.addEventListener("mouseenter", () => {
                 box.setAttribute("style", "background-color:green");
