@@ -1,5 +1,5 @@
 function grid() {
-    let container = document.getElementsByClassName("container");
+    let container = document.getElementsByClassName("main_container");
 
     for (let row = 0; row < 16; row++) {
         let line = document.createElement("div")

@@ -3,22 +3,37 @@ body {
     /* align-content: center; */
     /* text-align: center; */
     /* width: 100%; */
+    margin: auto;
+}
+
+.main_container {
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
     display: flex;
     /* flex-direction: row; */
-    gap: 5px;
-    width: 80%;
-    /* justify-content: space-around; */
+    /* gap: 5px; */
+    /* width: 80%;
+    height: 80%; */
+    justify-content: center;
+    /* align-items: center; */
     /* align-items: ; */
+    /* align-items: center; */
     flex-wrap: wrap;
-    /* margin: auto; */
+    margin: auto;
+    /* text-align: center; */
     /* border: black 5px solid; */
 }
 
 .box {
-    border: black 5px solid;
-    width: 10px;
-    height: 10px;
+    /* display: flex; */
+    /* justify-items: auto; */
+    /* text-align: center; */
+    /* justify-content: space-around; */
+    /* align-items: center; */
+    border: black 1px solid;
+    min-width: 30px;
+    min-height: 30px;
 }
