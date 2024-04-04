@@ -10,6 +10,12 @@ function grid() {
         for (let col = 0; col < 16; col++) {
             let box = document.createElement("div");
             box.classList.add("box");
+            box.addEventListener("mouseenter", () => {
+                box.setAttribute("style", "background-color:green");
+            })
+            box.addEventListener("mouseleave", () => {
+                box.setAttribute("style", "background-color:white");
+            })
             
             line.appendChild(box);
             container[0].appendChild(line);
