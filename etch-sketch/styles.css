@@ -1,8 +1,4 @@
 body {
-    /* justify-content: center; */
-    /* align-content: center; */
-    /* text-align: center; */
-    /* width: 100%; */
     margin: auto;
 }
 
@@ -13,26 +9,11 @@ body {
 
 .container {
     display: flex;
-    /* flex-direction: row; */
-    /* gap: 5px; */
-    /* width: 80%;
-    height: 80%; */
     justify-content: center;
-    /* align-items: center; */
-    /* align-items: ; */
-    /* align-items: center; */
-    flex-wrap: wrap;
     margin: auto;
-    /* text-align: center; */
-    /* border: black 5px solid; */
 }
 
 .box {
-    /* display: flex; */
-    /* justify-items: auto; */
-    /* text-align: center; */
-    /* justify-content: space-around; */
-    /* align-items: center; */
     background-color: white;
     border: black 1px solid;
     min-width: 30px;

@@ -5,8 +5,6 @@ function grid() {
         let line = document.createElement("div")
         line.classList.add("container");
 
-        // container[0].appendChild(line);
-
         for (let col = 0; col < 16; col++) {
             let box = document.createElement("div");
             box.classList.add("box");
@@ -14,22 +12,15 @@ function grid() {
                 box.setAttribute("style", "background-color:green");
             })
             box.addEventListener("mouseleave", () => {
-                box.setAttribute("style", "background-color:white");
+                setTimeout(() => {
+                    box.setAttribute("style", "background-color:white");
+                }, 1000)
             })
             
             line.appendChild(box);
             container[0].appendChild(line);
         }
-
-        // if (row == (row - 1)) {
-        //     break;
-        // } else {
-        //     let line = document.createElement("br");
-        //     container[0].appendChild(line);
-        // }
     }
-
-
 }
 
 grid();
