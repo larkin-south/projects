@@ -1,11 +1,21 @@
-function grid() {
+function size() {
+    let size = prompt("Enter the size of grid you want to generate:");
+
+    return size;
+}
+
+function grid(size) {
     let container = document.getElementsByClassName("main_container");
 
-    for (let row = 0; row < 20; row++) {
+    if (size !== null) {
+        size = 16;
+    }
+
+    for (let row = 0; row < size; row++) {
         let line = document.createElement("div")
         line.classList.add("container");
 
-        for (let col = 0; col < 20; col++) {
+        for (let col = 0; col < size; col++) {
             let box = document.createElement("div");
             box.classList.add("box");
             box.addEventListener("mouseenter", () => {
@@ -23,4 +33,10 @@ function grid() {
     }
 }
 
+function prepareButton() {
+    let sizeButton = document.getElementById("size");
+    sizeButton.addEventListener("click", size);
+}
+
 grid();
+prepareButton();
