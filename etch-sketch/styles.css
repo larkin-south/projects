@@ -4,16 +4,20 @@ body {
 
 .main_container {
     display: flex;
+    width: 500px;
+    height: 500px;
     flex-direction: column;
+    margin: auto;
 }
 
 .container {
     display: flex;
+    flex: 1;
     justify-content: center;
-    margin: auto;
 }
 
 .box {
+    flex: 1;
     background-color: white;
     border: black 1px solid;
     min-width: 30px;

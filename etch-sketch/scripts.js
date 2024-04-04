@@ -1,11 +1,11 @@
 function grid() {
     let container = document.getElementsByClassName("main_container");
 
-    for (let row = 0; row < 16; row++) {
+    for (let row = 0; row < 20; row++) {
         let line = document.createElement("div")
         line.classList.add("container");
 
-        for (let col = 0; col < 16; col++) {
+        for (let col = 0; col < 20; col++) {
             let box = document.createElement("div");
             box.classList.add("box");
             box.addEventListener("mouseenter", () => {
