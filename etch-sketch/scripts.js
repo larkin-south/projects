@@ -1,5 +1,5 @@
 function size() {
-    let size = prompt("Enter a grid size from 1-100 (default 16):");
+    let size = prompt("Enter a grid size from 1-100:");
 
     if (size === null || size < 1 || size > 100) {
     } else {
@@ -32,10 +32,7 @@ function grid(size) {
             let box = document.createElement("div");
             box.classList.add("box");
             box.addEventListener("mouseenter", () => {
-                // const bind = randomColor());
-                // box.setAttribute("style", bind());
                 box.setAttribute("style", randomColor());
-                // box.setAttribute("style", "opacity:" + .1);
             })
             // box.addEventListener("mouseleave", () => {
             //     // setTimeout(() => {
@@ -56,23 +53,12 @@ function randomColor() {
     while (hex.length < 3) {
         hex.push(Math.floor(Math.random() * 256));
     }
-    let box = document.getElementsByClassName("box");
-    let boxOpacity = window.getComputedStyle(box[box.length - 1]).getPropertyValue("opacity");
-    let background = "background-color:rgba(" + hex[0] + "," + hex[1] + "," + hex[2] + "," + (boxOpacity - .1) + ")"
-    console.log(boxOpacity);
+
+    let background = "background-color:rgb(" + hex[0] + "," + hex[1] + "," + hex[2] + ")";
+
     return background;
 }
-
-// function opacity(item) {
-//     let current = window.getComputedStyle(this).opacity;
-//     let opacity = "opacity:" + current + .1;
-
-//     return opacity;
-// }
 
 document.getElementById("size").addEventListener("click", size);
 
 grid(16);
-const item = document.getElementById("size");
-let temp = window.getComputedStyle(item).getPropertyValue("opacity");
-console.log(temp);
