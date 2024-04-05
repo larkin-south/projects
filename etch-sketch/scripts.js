@@ -32,7 +32,7 @@ function grid(size) {
             let box = document.createElement("div");
             box.classList.add("box");
             box.addEventListener("mouseenter", () => {
-                box.setAttribute("style", "background-color:green");
+                box.setAttribute("style", randomColor());
             })
             box.addEventListener("mouseleave", () => {
                 setTimeout(() => {
@@ -44,6 +44,18 @@ function grid(size) {
             container[0].appendChild(line);
         }
     }
+}
+
+function randomColor() {
+    let hex = [];
+
+    while (hex.length < 3) {
+        hex.push(Math.floor(Math.random() * 256));
+    }
+
+    let background = "background-color:rgb(" + hex[0] + "," + hex[1] + "," + hex[2] + ")"
+
+    return background;
 }
 
 document.getElementById("size").addEventListener("click", size);
