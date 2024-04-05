@@ -10,21 +10,13 @@ function size() {
 
 function grid(size) {
     let container = document.getElementsByClassName("main_container");
-    let line = document.createElement("div")
-    let box = document.createElement("div");
-       
-    if (!(line.hasChildNodes())) {
-        size = 16;
-    }
 
-    while (line.hasChildNodes()) {
-        line.removeChild(line.firstChild);
-    }
-
-    for (let row = 0; row < size; row++) {
+    for (let row = 0; row < 16; row++) {
+        let line = document.createElement("div")
         line.classList.add("container");
 
-        for (let col = 0; col < size; col++) {
+        for (let col = 0; col < 16; col++) {
+            let box = document.createElement("div");
             box.classList.add("box");
             box.addEventListener("mouseenter", () => {
                 box.setAttribute("style", "background-color:green");
@@ -41,10 +33,6 @@ function grid(size) {
     }
 }
 
-function prepareButton() {
-    let sizeButton = document.getElementById("size");
-    sizeButton.addEventListener("click", size);
-}
+document.getElementById("size").addEventListener("click", size);
 
 grid();
-prepareButton();
