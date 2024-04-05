@@ -1,21 +1,34 @@
 function size() {
-    let size = prompt("Enter the size of grid you want to generate:");
+    let size = prompt("Enter a grid size from 1-100 (default 16):");
 
-    if (size == null) {
-        size = 16;
+    if (size === null || size < 1 || size > 100) {
+    } else {
+        clearGrid();
+        grid(size);
+    }
+}
+
+function clearGrid() {
+    let boxes = document.getElementsByClassName("box");
+    let lines = document.getElementsByClassName("container");
+
+    while (boxes.length > 0) {
+        boxes[0].parentNode.removeChild(boxes[0]);
     }
 
-    grid(size);
+    while (lines.length > 0) {
+        lines[0].parentNode.removeChild(lines[0]);
+    }
 }
 
 function grid(size) {
     let container = document.getElementsByClassName("main_container");
 
-    for (let row = 0; row < 16; row++) {
+    for (let row = 0; row < size; row++) {
         let line = document.createElement("div")
         line.classList.add("container");
 
-        for (let col = 0; col < 16; col++) {
+        for (let col = 0; col < size; col++) {
             let box = document.createElement("div");
             box.classList.add("box");
             box.addEventListener("mouseenter", () => {
@@ -35,4 +48,4 @@ function grid(size) {
 
 document.getElementById("size").addEventListener("click", size);
 
-grid();
+grid(16);
