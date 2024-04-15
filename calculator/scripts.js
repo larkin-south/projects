@@ -31,19 +31,21 @@ function operate(a, operator, b) {
     }
 }
 
-function buildCalculator() {
-    let outputContainer = document.getElementById("outputContainer");
-    let keypad = document.getElementById("keypad");
-
-    for (let row = 1; row < 5; row++) {
-        let numRow = document.createElement("div")
-        numRow.classList.add("numRow");
-        numRow.id("numRow" + row);
-        
-        let numbers = document.createElement("div");
-
-        for (let num = 1; num < 4; num++) {
-            numRow.appendChild(numbers)
-        }
-    }
+function updateOutput(e) {
+    let display = document.getElementById("output");
+    display.innerHTML += e.srcElement.innerHTML;
 }
+
+function activateButtons() {
+    let rows = document.getElementsByClassName("numRow");
+
+    for (element of rows) {
+        let nums = element.getElementsByClassName("number");
+
+        for (button of nums) {
+            button.addEventListener("click", updateOutput);
+        }
+    };
+}
+
+activateButtons();
