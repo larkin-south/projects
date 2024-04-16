@@ -43,9 +43,10 @@ function updateOutput(output) {
 
 function checkValue(e) {
     let regex = /[^0-9]/;
+    let decReg = /\./;
     let newEntry = e.srcElement.innerText;
 
-    if (regex.test(newEntry) && newEntry !== ".") {
+    if (regex.test(newEntry) && !decReg.test(newEntry)) {
         opCount++
         if (opCount == 1) {
             output[1] = newEntry;
@@ -67,21 +68,37 @@ function checkValue(e) {
         }
     }
 
-    if (!regex.test(newEntry) || newEntry == ".") {
+    if (decReg.test(newEntry)) {        
         if (opCount == 0) {
-            if (isNaN(output[0])) {
+            if (output[0] === undefined) {
                 output[0] = newEntry;
-            } else {
+            } else if (!decReg.test(output[0])) {
                 output[0] = output[0] + newEntry;
             }
         } else if (opCount == 1) {
-            if (isNaN(output[2])) {
+            if (output[2] === undefined) {
+                output[2] = newEntry;
+            } else if (!decReg.test(output[2])) {
+                output[2] = output[2] + newEntry;
+            }        
+        }
+    }
+
+    if (!regex.test(newEntry)) {
+        if (opCount == 0) {
+            if (output[0] === undefined) {
+                output[0] = newEntry;
+            } else {
+            output[0] = output[0] + newEntry;
+            }
+        } else if (opCount == 1) {
+            if (output[2] === undefined) {
                 output[2] = newEntry;
             } else {
-            output[2] = output[2] + newEntry;
+                output[2] = output[2] + newEntry;
             }
         }
-    }    
+    }  
 
     updateOutput(output);
 }
