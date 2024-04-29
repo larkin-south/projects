@@ -1,28 +1,4 @@
-# game starts with computer randomly assinging colors to array
-# player guesses assortment of colors in an order
-# computer compares input to its own array
-# if any colors match, then check for order matching as well
-# each correct item and position gets black peg from computer
-# right color, wrong position gets white peg
-# no pegs returned if no color in guess is used in code
-require 'pry-byebug'
-# player guesses list of colors into array
-# compare to compter array, any matching values AND index returns black
-# matching value ONLY returns white
-# when arrays match, win
-
-# class GameEnvironment
-
 class Codemaker
-  @@color_table = {
-    :'1' => 'red',
-    :'2' => 'yellow',
-    :'3' => 'green',
-    :'4' => 'blue',
-    :'5' => 'black',
-    :'6' => 'white'
-  }
-
   def initialize
     @color_options = %w[red yellow green blue black white]
     @code = @color_options.sample(4)
@@ -51,7 +27,16 @@ class Codemaker
   end
 
   def convert_guess_to_colors(guess)
-    guess.map { |value| @@color_table[value.to_sym] }
+    @color_table = {
+      '1': 'red',
+      '2': 'yellow',
+      '3': 'green',
+      '4': 'blue',
+      '5': 'black',
+      '6': 'white'
+    }
+
+    guess.map { |value| @color_table[value.to_sym] }
   end
 
   def win_condition?(guess)
@@ -78,10 +63,30 @@ end
 
 codemaker = Codemaker.new
 codebreaker = Codebreaker.new
-1..12.each do
+
+(1..12).each do |round_number|
+  puts "Round #{round_number}"
   guess = codebreaker.new_guess
   converted_guess = codemaker.convert_guess_to_colors(guess)
-  codemaker.win_condition?
+  puts
+  puts "1: #{converted_guess[0]} | 2: #{converted_guess[1]} | 3: #{converted_guess[2]} | 4: #{converted_guess[3]}"
+
+  if codemaker.win_condition?(converted_guess)
+    puts 'You win!'
+    puts "Secret code: #{codemaker.show_colors}"
+    break
+  end
+
   num_white_pegs = codemaker.white_pegs(converted_guess)
   num_black_pegs = codemaker.black_pegs(converted_guess)
+
+  puts
+  puts "Black pegs returned: #{num_black_pegs}"
+  puts "White pegs returned: #{num_white_pegs}"
+  puts
+
+  if round_number == 12
+    puts 'You lose!'
+    puts "Secret code: #{codemaker.show_colors}"
+  end
 end
