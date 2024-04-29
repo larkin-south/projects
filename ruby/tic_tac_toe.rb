@@ -11,17 +11,26 @@ class PlayerActions
   end
 
   def place_piece
-    puts "#{@name.upcase}"
+    puts @name.to_s.upcase
     row = nil
-    unless row.instance_of?(Integer) && row < 4 && row.positive?
+    col = nil
+    until row.class == Integer && row.between?(1, 3)
       puts 'Enter row placement (1-3):'
-      row = gets.chomp
+      row = gets.chomp.to_i
     end
-    puts 'Enter column placement (1-3):'
-    col = gets.chomp
+    until col.class == Integer && col.between?(1, 3)
+      puts 'Enter column placement (1-3):'
+      col = gets.chomp.to_i
+    end
     @locations.push([row, col])
 
-    BoardUpdates.update_rows(@locations, @name)
+    if BoardUpdates.update_rows(@locations.last, @name) == 'retry'
+      @locations.delete([row, col])
+      'retry'
+    else
+      BoardUpdates.display_board
+      BoardUpdates.player_win?(@locations)
+    end
   end
 end
 
@@ -35,23 +44,26 @@ class BoardUpdates
     :row3 => [' ', ' ', ' ']
   }
 
-  def self.update_rows(updates, name)
-    updates.each do |item|
-      @row = "row#{item[0]}".to_sym
-      @col = item[1].to_i - 1
+  def self.update_rows(last_update, name)
+    @row = "row#{last_update[0]}".to_sym
+    @col = last_update[1].to_i - 1
+    if @board[@row][@col] == ' '
       @board[@row][@col] = 'x' if name == 'player1'
       @board[@row][@col] = 'o' if name == 'player2'
+    else
+      BoardUpdates.display_board
+      puts 'Position already taken. Choose another.'
+      'retry'
     end
-    BoardUpdates.display_board
-    BoardUpdates.player_win?(updates)
   end
 
   def self.display_board
     puts
     puts 'Current board:'
-    puts "| #{@board[:row1][0]} | #{@board[:row1][1]} | #{@board[:row1][2]} |"
-    puts "| #{@board[:row2][0]} | #{@board[:row2][1]} | #{@board[:row2][2]} |"
-    puts "| #{@board[:row3][0]} | #{@board[:row3][1]} | #{@board[:row3][2]} |"
+    puts '     1   2   3  '
+    puts "1  | #{@board[:row1][0]} | #{@board[:row1][1]} | #{@board[:row1][2]} |"
+    puts "2  | #{@board[:row2][0]} | #{@board[:row2][1]} | #{@board[:row2][2]} |"
+    puts "3  | #{@board[:row3][0]} | #{@board[:row3][1]} | #{@board[:row3][2]} |"
     puts
   end
 
@@ -72,9 +84,9 @@ class BoardUpdates
     counter2 = 0
     counter3 = 0
     updates.each do |row, _col|
-      counter1 += 1 if row.to_i == 1
-      counter2 += 1 if row.to_i == 2
-      counter3 += 1 if row.to_i == 3
+      counter1 += 1 if row == 1
+      counter2 += 1 if row == 2
+      counter3 += 1 if row == 3
     end
     if counter1 == 3 || counter2 == 3 || counter3 == 3
       true
@@ -88,9 +100,9 @@ class BoardUpdates
     counter2 = 0
     counter3 = 0
     updates.each do |_row, col|
-      counter1 += 1 if col.to_i == 1
-      counter2 += 1 if col.to_i == 2
-      counter3 += 1 if col.to_i == 3
+      counter1 += 1 if col == 1
+      counter2 += 1 if col == 2
+      counter3 += 1 if col == 3
     end
     if counter1 == 3 || counter2 == 3 || counter3 == 3
       true
@@ -102,7 +114,7 @@ class BoardUpdates
   def self.cross_win?(updates)
     check1 = [[1, 1], [2, 2], [3, 3]]
     check2 = [[1, 3], [2, 2], [3, 1]]
-    if !(check1 - updates) == check1 || !(check2 - updates) == check2
+    if (check1 - updates).empty? || (check2 - updates).empty?
       true
     else
       false
@@ -110,14 +122,24 @@ class BoardUpdates
   end
 end
 
+# Game initiation
 player1 = PlayerActions.new('player1')
 player2 = PlayerActions.new('player2')
 
 loop do
-  if player1.place_piece
+  p1_result = player1.place_piece
+  while p1_result == 'retry'
+    p1_result = player1.place_piece
+  end
+  if p1_result
     p 'Player1 wins!'
     break
-  elsif player2.place_piece
+  end
+  p2_result = player2.place_piece
+  while p2_result == 'retry'
+    p2_result = player2.place_piece
+  end
+  if p2_result
     p 'Player2 wins!'
     break
   end
