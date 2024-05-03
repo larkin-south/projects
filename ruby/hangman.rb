@@ -1,4 +1,5 @@
 require 'pry-byebug'
+require 'json'
 
 module GameSetup
   def pick_word_from_list
@@ -12,6 +13,18 @@ module GameSetup
 
   def create_word_board(word)
     Array.new(word.length, '_')
+  end
+
+  def save_game
+    game_data = {
+      word: @word,
+      word_board: @word_board,
+      guessed_letters: @guessed_letters,
+      attempts: @attempts
+    }
+
+    save_file = JSON.generate(game_data)
+    puts save_file
   end
 end
 
@@ -93,6 +106,7 @@ module Gameplay
       break if lose?
 
       show_game_status
+      save_game
     end
   end
 end
