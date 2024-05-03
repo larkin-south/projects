@@ -112,7 +112,6 @@ class PlayerGameData
   end
 end
 
-player = PlayerGameData.new
-player.play_game
+PlayerGameData.new.play_game
 
 # continue until "0" command to save
