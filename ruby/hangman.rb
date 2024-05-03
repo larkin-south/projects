@@ -1,3 +1,5 @@
+require 'pry-byebug'
+
 module GameSetup
   def pick_word_from_list
     word_list = File.read('google-10000-english-no-swears.txt')
@@ -5,7 +7,7 @@ module GameSetup
     word_list = word_list.lines.filter do |word|
       word.length.between?(5, 12)
     end
-    word_list.sample
+    word_list.sample.upcase.chomp
   end
 
   def create_word_board(word)
@@ -14,50 +16,90 @@ module GameSetup
 end
 
 module Gameplay
-  def get_player_guess
+  def player_guess
     puts 'Enter a letter:'
+    input = ''
     loop do
-      input = gets.chomp
-      break if input.match?(/[a-zA-Z]/) && input.length == 1 && !player.guessed_letters.any?(input)
+      input = gets.chomp.upcase
+      if @guessed_letters.include?(input)
+        puts 'You already guessed that letter. Try another.'
+        redo
+      end
+      break if input.match?(/[a-zA-Z]/) && input.length == 1
     end
-    input
+    puts
+    input.upcase
   end
 
   def update_attempts
-    player.attempts += 1
+    @attempts += 1
   end
 
-  def is_guess_correct?(word, guess)
+  def guess_correct?(word, guess)
     word.include?(guess)
   end
 
   def correct_guess(guess)
-    player.guessed_letters.push(guess)
-
-    # return False if player.word.split('').&(guess.split('')).count < 1
+    @guessed_letters.push(guess)
 
     letter_index = []
-    player.word.split('').each_with_index do |letter, index|
+    @word.split('').each_with_index do |letter, index|
       letter_index.push(index) if letter == guess
     end
 
     letter_index.each do |index|
-      player.word_board[index] = guess
+      @word_board[index] = guess
     end
   end
 
-  # def wrong_guess(guess)
-    
-  # end
+  def show_game_status
+    puts @word_board.join(' ')
+    puts
+    puts "Attempts remaining: #{15 - @attempts}"
+    puts "Guessed letters: #{@guessed_letters}"
+    puts
+  end
 
   def win?
-    player.word == player.word_board
+    return unless @word == @word_board.join('')
+
+    show_game_status
+    puts
+    puts "You win!\nCorrect word: #{@word}"
+    puts
+    true
+  end
+
+  def lose?
+    return unless @attempts == 15
+
+    puts "You ran out of guesses.\nCorrect word: #{@word}"
+    puts
+    true
+  end
+
+  def play_game
+    show_game_status
+    loop do
+      new_guess = player_guess
+      if guess_correct?(@word, new_guess)
+        correct_guess(new_guess)
+      else
+        @guessed_letters.push(new_guess)
+        update_attempts
+      end
+
+      break if win?
+      break if lose?
+
+      show_game_status
+    end
   end
 end
 
 class PlayerGameData
   attr_accessor :attempts
-  attr_reader :word, :word_board, :guessed_letters, :guess_limit
+  attr_reader :word, :word_board, :guessed_letters
 
   include GameSetup
   include Gameplay
@@ -66,19 +108,11 @@ class PlayerGameData
     @word = pick_word_from_list
     @word_board = create_word_board(@word)
     @guessed_letters = []
-    @guess_limit = 15
     @attempts = 0
   end
 end
 
 player = PlayerGameData.new
-player_guess = player.get_player_guess
-player.update_attempts
-player.is_guess_correct? ? correct_guess(player_guess) : player.guessed_letters.push(guess)
-if player.win?
-  puts "You win!"
-end
+player.play_game
 
-get letter guess from user
-add letter to guessed_letters and update word board with letter if match
-continue until "0" command to save
+# continue until "0" command to save
