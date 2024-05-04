@@ -33,15 +33,15 @@ module GameSetup
   def load_game
     save_file = File.open('./save_data/hangman_save.json', 'r')
     save_file.each do |line|
-      game_from_json(JSON.parse(line))
+      game_from_json(JSON.parse(line, { symbolize_names: true }))
     end
   end
 
   def game_from_json(game_data)
-    @word = game_data['word']
-    @word_board = game_data['word_board']
-    @guessed_letters = game_data['guessed_letters']
-    @attempts = game_data['attempts']
+    @word = game_data[:word]
+    @word_board = game_data[:word_board]
+    @guessed_letters = game_data[:guessed_letters]
+    @attempts = game_data[:attempts]
 
     play_game
   end
