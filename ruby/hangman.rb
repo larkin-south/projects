@@ -1,5 +1,5 @@
-require 'pry-byebug'
 require 'json'
+require 'date'
 
 module GameSetup
   def pick_word_from_list
@@ -23,14 +23,33 @@ module GameSetup
       attempts: @attempts
     }
 
-    save_file = JSON.generate(game_data)
-    puts save_file
+    Dir.mkdir('save_data') unless Dir.exist?('save_data')
+    File.open('./save_data/hangman_save.json', 'w') do |file|
+      file.puts game_data.to_json
+    end
+    exit
+  end
+
+  def load_game
+    save_file = File.open('./save_data/hangman_save.json', 'r')
+    save_file.each do |line|
+      game_from_json(JSON.parse(line))
+    end
+  end
+
+  def game_from_json(game_data)
+    @word = game_data['word']
+    @word_board = game_data['word_board']
+    @guessed_letters = game_data['guessed_letters']
+    @attempts = game_data['attempts']
+
+    play_game
   end
 end
 
 module Gameplay
   def player_guess
-    puts 'Enter a letter:'
+    puts "Enter a letter. Enter 'save' to save and exit or 'quit' to exit:"
     input = ''
     loop do
       input = gets.chomp.upcase
@@ -38,6 +57,8 @@ module Gameplay
         puts 'You already guessed that letter. Try another.'
         redo
       end
+      save_game if input == 'SAVE'
+      exit if input == 'QUIT'
       break if input.match?(/[a-zA-Z]/) && input.length == 1
     end
     puts
@@ -91,6 +112,16 @@ module Gameplay
     true
   end
 
+  def start_game
+    puts '1: New Game | 2: Load Game'
+    start = gets.chomp
+    if start == '1'
+      PlayerGameData.new.play_game
+    elsif start == '2'
+      PlayerGameData.new.load_game
+    end
+  end
+
   def play_game
     show_game_status
     loop do
@@ -106,15 +137,11 @@ module Gameplay
       break if lose?
 
       show_game_status
-      save_game
     end
   end
 end
 
 class PlayerGameData
-  attr_accessor :attempts
-  attr_reader :word, :word_board, :guessed_letters
-
   include GameSetup
   include Gameplay
 
@@ -126,6 +153,4 @@ class PlayerGameData
   end
 end
 
-PlayerGameData.new.play_game
-
-# continue until "0" command to save
+PlayerGameData.new.start_game
