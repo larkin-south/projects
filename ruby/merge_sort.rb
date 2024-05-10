@@ -1,73 +1,29 @@
-def merge(array)
-  array1 = array.slice!(0, array.length / 2)
-  array2 = array
-  array1 = merge(array1) unless array1.length <= 1
-  array2 = merge(array2) unless array2.length <= 1
+def merge_sort(array)
+  return array if array.length <= 1
 
-  # return array1 if array1.length == 1
-  # return array2 if array2.length == 1
+  left = array.slice!(0, array.length / 2)
+  right = array
+  left = merge_sort(left)
+  right = merge_sort(right)
 
   new_array = []
   a = 0
   b = 0
-  until a == array1.length || b == array2.length do
-    if array1[a] < array2[b]
-      new_array << array1[a]
+
+  until left[a].nil? || right[b].nil?
+    if left[a] < right[b]
+      new_array << left[a]
       a += 1
+      new_array << right[b..right.length] if left[a].nil?
     else
-      new_array << array2[b]
+      new_array << right[b]
       b += 1
+      new_array << left[a..left.length] if right[b].nil?
     end
   end
 
-  if array1[a].nil?
-    new_array << array2[b..(array2.length - 1)]
-  elsif array2[b].nil?
-    new_array << array1[a..(array1.length - 1)]
-  end
-
-  # if array.length > 1
-  #   array = merge(array)
-  # else
-  #   array = []
-  # end
-
-
-  # until first_half.empty? || array.empty?
-  #   if first_half[0] <= array.flatten[0]
-  #     new_array << first_half[0]
-  #     first_half.shift
-  #     break
-  #   else
-  #     new_array << array[0]
-  #     array.shift
-  #   end
-  # end
-
-  # new_array << (first_half.empty? ? array : first_half)
-
-
-
-  new_array
-
+  new_array.flatten
 end
 
-
-
-# split array in half
-# call function to split that half into halves UNLESS lenght is 1
-
-# array of 2 values
-# if length is greater than 1
-#   split in half
-#   compare first of each and add to new array in sorted order
-# else
-#   return value
-# end
-# 
-# 4 1 2 3
-# 4 1     2 3
-# 4   1       2   3
-# 
-
-print merge([3, 1, 4, 2, 2, 2, 1, 3])
+p merge_sort([3, 2, 1, 13, 8, 5, 0, 1])
+p merge_sort([105, 79, 100, 110])
