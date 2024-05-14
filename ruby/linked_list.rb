@@ -18,7 +18,7 @@ class LinkedList
     @head = node
   end
 
-  def size
+  def self.size
     node = @head
     count = 0
     until node.next_node.nil?
@@ -28,10 +28,47 @@ class LinkedList
     count
   end
 
-  # def pop
+  def at(index)
+    node = @head
+    index.times do
+      node = node.next_node
+    end
+    node
+  end
 
+  def pop
+    node = @head
+    count = self.size
+    (count - 1).times do
+      node = node.next_node
+    end
+    node.next_node = nil
+  end
+
+  def contains?(value)
+    node = @head
+    until node.next_node.nil?
+      return true if node.value == value
+
+      node = node.next_node
+    end
+    false
+  end
+
+  def find(value)
+    node = @head
+    count = 0
+    until node.next_node.nil?
+      count += 1
+      return count if node.value == value
+
+      node = node.next_node
+    end
+  end
+
+  # def to_s
+    
   # end
-
 end
 
 class Node 
