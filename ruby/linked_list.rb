@@ -18,9 +18,9 @@ class LinkedList
     @head = node
   end
 
-  def self.size
+  def size
     node = @head
-    count = 0
+    count = 1
     until node.next_node.nil?
       count += 1
       node = node.next_node
@@ -39,7 +39,7 @@ class LinkedList
   def pop
     node = @head
     count = self.size
-    (count - 1).times do
+    count.times do
       node = node.next_node
     end
     node.next_node = nil
@@ -81,9 +81,10 @@ class Node
 end
 
 list = LinkedList.new("test")
-# list.append("another test")
+list.append("another test")
 p list.head.value
 p list.head.next_node
 p list.tail
+p list.size
 # p list.tail.next_node
 # list[0,1]

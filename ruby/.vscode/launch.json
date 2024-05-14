@@ -8,7 +8,7 @@
             "name": "Debug Local File",
             "type": "Ruby",
             "request": "launch",
-            "program": "${workspaceRoot}/merge_sort.rb"
+            "program": "${workspaceRoot}/linked_list.rb"
         },
         {
             "type": "rdbg",
