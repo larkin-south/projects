@@ -1,15 +1,16 @@
 class LinkedList 
-  attr_accessor :head, :tail
+  attr_reader :head
 
-  def initialize(value = nil)
-    @head = @tail = Node.new(value)
+  def initialize()
+    @head = nil
   end
 
-  def append(value = nil, next_node = nil)
-    node = Node.new(value, next_node)
-    node.next_node = nil
-    @tail.next_node = node.value
-    @tail = node
+  def append(value)
+    if @head
+      node = Node.new(value)
+      node.next_node = @head
+      @head.next_node = nil
+      @head = node
   end
 
   def prepend(value, next_node)
@@ -26,6 +27,17 @@ class LinkedList
       node = node.next_node
     end
     count
+  end
+
+  # def head
+  #   @head
+  # end
+
+  def tail
+    node = @head
+    return node unless node.next_node
+
+    return node unless node.next_node while (node = node.next_node)
   end
 
   def at(index)
@@ -80,11 +92,11 @@ class Node
   end
 end
 
-list = LinkedList.new("test")
-list.append("another test")
-p list.head.value
-p list.head.next_node
-p list.tail
-p list.size
+list = LinkedList.new()
+list.append("test")
+p list.head
+# p list.head.next_node
+# p list.tail
+# p list.size
 # p list.tail.next_node
 # list[0,1]
