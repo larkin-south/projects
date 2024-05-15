@@ -1,22 +1,25 @@
 class LinkedList 
-  attr_reader :head
+  attr_accessor :head
 
-  def initialize()
+  def initialize
     @head = nil
   end
 
   def append(value)
-    if @head
-      node = Node.new(value)
-      node.next_node = @head
-      @head.next_node = nil
-      @head = node
+    node = Node.new(value)
+    node.next_node = @head if head
+    @head = node
   end
 
-  def prepend(value, next_node)
-    node = Node.new(value, next_node)
-    node.next_node = @head.value
-    @head = node
+  def prepend(value)
+    node = Node.new(value)
+    if head
+      current = @head
+      current = current.next_node while current.next_node
+      current.next_node = node
+    else
+      @head = node
+    end
   end
 
   def size
@@ -29,15 +32,12 @@ class LinkedList
     count
   end
 
-  # def head
-  #   @head
-  # end
-
   def tail
     node = @head
     return node unless node.next_node
 
-    return node unless node.next_node while (node = node.next_node)
+    node = node.next_node while node.next_node
+    node
   end
 
   def at(index)
@@ -50,10 +50,7 @@ class LinkedList
 
   def pop
     node = @head
-    count = self.size
-    count.times do
-      node = node.next_node
-    end
+    node = node.next_node unless node.next_node.nil?
     node.next_node = nil
   end
 
@@ -71,16 +68,25 @@ class LinkedList
     node = @head
     count = 0
     until node.next_node.nil?
-      count += 1
       return count if node.value == value
 
+      count += 1
       node = node.next_node
     end
+    puts 'Value does not exist.'
   end
 
-  # def to_s
-    
-  # end
+  def to_s
+    node = @head
+    string = ''
+
+    size.times do
+      string += "( #{node.value} ) -> "
+      node = node.next_node
+    end
+
+    puts string[0...(string.length - 4)]
+  end
 end
 
 class Node 
@@ -92,11 +98,16 @@ class Node
   end
 end
 
-list = LinkedList.new()
-list.append("test")
-p list.head
-# p list.head.next_node
-# p list.tail
-# p list.size
-# p list.tail.next_node
-# list[0,1]
+list = LinkedList.new
+list.prepend('test1')
+list.prepend('test2')
+list.prepend('test3')
+list.append('test0')
+puts list.size
+puts list.head
+puts list.tail
+puts list.at(1)
+puts list.contains?('test1')
+puts list.contains?('nothing')
+puts list.find('test2')
+list.to_s
