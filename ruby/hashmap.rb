@@ -1,4 +1,6 @@
 class HashMap
+  attr_accessor :storage
+
   def init
     storage = {}
   end
@@ -21,9 +23,41 @@ class HashMap
       storage[:"#{hash}"] = LinkedList.new.prepend(key, value)
     end
   end
+  
+  def get(key)
+    hash = hash(key)
+#test if find function on line 31 can work without specifying sotrage hash location
+    if storage.key?(hash)
+      storage[:"#{hash}"].contains?(key) ? find(key) : puts('Value does not exist.')
+    else
+      puts 'Value does not exist.'
+    end
+  end
+
+  def has?(key)
+    hash = hash(key)
+
+    if storage.key?(hash)
+      storage[:"#{hash}"].contains?(key)
+
+    else
+      false
+    end
+  end
+
+  def remove(key)
+    hash = hash(key)
+
+    if storage.key?(hash)
+      index = storage[:"#{hash}"].find_index?(key)
+      return index if index.nil?
+
+      return delete_at(index)
+    end
+    nil
+  end
 end
-#if no key, create head with value
-#if key, then update, or create tail if no match
+
 class LinkedList 
   attr_accessor :head
 
@@ -48,15 +82,15 @@ class LinkedList
     end
   end
 
-  # def size
-  #   node = @head
-  #   count = 1
-  #   until node.next_node.nil?
-  #     count += 1
-  #     node = node.next_node
-  #   end
-  #   count
-  # end
+  def size
+    node = @head
+    count = 1
+    until node.next_node.nil?
+      count += 1
+      node = node.next_node
+    end
+    count
+  end
 
   # def tail
   #   node = @head
@@ -96,17 +130,51 @@ class LinkedList
     node.value = value
   end
 
-  # def find(value)
-  #   node = @head
-  #   count = 0
-  #   until node.next_node.nil?
-  #     return count if node.value == value
+  def delete_at(index)
+    node = @head
+    prev_node = nil
+    deleted_node = nil
+    (index - 1).times do
+      node = node.next_node
+      prev_node = node
+    end
 
-  #     count += 1
-  #     node = node.next_node
-  #   end
-  #   puts 'Value does not exist.'
-  # end
+    index.times do
+      node = node.next_node
+      deleted_node = node
+    end
+
+    (index + 1).times do
+      node = node.next_node
+    end
+
+    prev_node.next_node = node
+    deleted_node
+  end
+
+  def find(key)
+    node = @head
+    # count = 0
+    until node.next_node.nil?
+      return node.key if node.key == key
+
+      # count += 1
+      node = node.next_node
+    end
+    puts 'Value does not exist.'
+  end
+
+  def find_index(key)
+    node = @head
+    count = 0
+    until node.next_node.nil?
+      return count if node.key == key
+
+      count += 1
+      node = node.next_node
+    end
+    nil
+  end
 
   # def to_s
   #   node = @head
