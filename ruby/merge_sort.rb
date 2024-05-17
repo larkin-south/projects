@@ -24,6 +24,3 @@ def merge_sort(array)
 
   new_array.flatten
 end
-
-p merge_sort([3, 2, 1, 13, 8, 5, 0, 1])
-p merge_sort([105, 79, 100, 110])
