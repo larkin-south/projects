@@ -1,8 +1,8 @@
 class HashMap
   attr_accessor :storage
 
-  def init
-    storage = {}
+  def initialize
+    @storage = {}
   end
 
   def hash(key)
@@ -15,46 +15,83 @@ class HashMap
   end 
 
   def set(key, value)
-    hash = hash(key)
+    bucket = hash(key)
 
-    if storage.key?(hash)
-      storage[:"#{hash}"].contains?(key) ? replace(key, value) : storage[:"#{hash}"].prepend(key, value)
+    if storage.key?(:"#{bucket}")
+      storage[:"#{bucket}"].contains?(key) ? storage[:"#{bucket}"].replace(value) : storage[:"#{bucket}"].prepend(key, value)
     else
-      storage[:"#{hash}"] = LinkedList.new.prepend(key, value)
+      storage[:"#{bucket}"] = LinkedList.new.prepend(key, value)
     end
   end
-  
+
   def get(key)
-    hash = hash(key)
-#test if find function on line 31 can work without specifying sotrage hash location
-    if storage.key?(hash)
-      storage[:"#{hash}"].contains?(key) ? find(key) : puts('Value does not exist.')
+    bucket = hash(key)
+
+    if storage.key?(:"#{bucket}")
+      storage[:"#{bucket}"].contains?(key) ? storage[:"#{bucket}"].find_value(key) : puts('Value does not exist.')
     else
       puts 'Value does not exist.'
     end
   end
 
   def has?(key)
-    hash = hash(key)
+    bucket = hash(key)
+    return false unless storage.key?(:"#{bucket}")
 
-    if storage.key?(hash)
-      storage[:"#{hash}"].contains?(key)
-
-    else
-      false
-    end
+    storage[:"#{bucket}"].contains?(key)
   end
 
   def remove(key)
-    hash = hash(key)
+    bucket = hash(key)
+    return nil unless storage.key?(:"#{bucket}")
 
-    if storage.key?(hash)
-      index = storage[:"#{hash}"].find_index?(key)
-      return index if index.nil?
+    index = storage[:"#{bucket}"].find_index(key)
+    return index if index.nil?
 
-      return delete_at(index)
+    result = storage[:"#{bucket}"].delete_at(index)
+    if result.nil?
+      deleted = storage[:"#{bucket}"].value
+      storage.delete(:"#{bucket}")
+      deleted
+    else
+      result
     end
-    nil
+  end
+
+  def length
+    count = 0
+    storage.each_value do |key|
+      count += key.size
+    end
+    count
+  end
+
+  def clear
+    @storage = {}
+  end
+
+  def keys
+    array = []
+    storage.each_value do |list|
+      array << list.key_list
+    end
+    array.flatten
+  end
+
+  def values
+    array = []
+    storage.each_value do |list|
+      array << list.value_list
+    end
+    array.flatten
+  end
+
+  def entries
+    array = []
+    storage.each_value do |list|
+      array << list.list_array
+    end
+    array
   end
 end
 
@@ -64,12 +101,6 @@ class LinkedList
   def initialize
     @head = nil
   end
-
-  # def append(value)
-  #   node = Node.new(value)
-  #   node.next_node = @head if head
-  #   @head = node
-  # end
 
   def prepend(key, value)
     node = Node.new(key, value)
@@ -83,7 +114,7 @@ class LinkedList
   end
 
   def size
-    node = @head
+    node = self
     count = 1
     until node.next_node.nil?
       count += 1
@@ -92,56 +123,37 @@ class LinkedList
     count
   end
 
-  # def tail
-  #   node = @head
-  #   return node unless node.next_node
-
-  #   node = node.next_node while node.next_node
-  #   node
-  # end
-
-  # def at(index)
-  #   node = @head
-  #   index.times do
-  #     node = node.next_node
-  #   end
-  #   node
-  # end
-
-  # def pop
-  #   node = @head
-  #   node = node.next_node unless node.next_node.nil?
-  #   node.next_node = nil
-  # end
-
   def contains?(key)
-    node = @head
+    node = self
     until node.next_node.nil?
       return true if node.key == key
 
       node = node.next_node
     end
-    false
+    node.key == key
   end
 
-  def replace(key, value)
-    node = @head
-    node = node.next_node until node.next_node == key
+  def replace(value)
+    node = self
     node.value = value
   end
 
   def delete_at(index)
-    node = @head
-    prev_node = nil
+    node = self
     deleted_node = nil
-    (index - 1).times do
-      node = node.next_node
-      prev_node = node
+    return deleted_node if index.zero? && node.next_node.nil?
+
+    prev_node = nil
+    if index.positive?
+      (index - 1).times do
+        node = node.next_node
+        prev_node = node
+      end
     end
 
     index.times do
       node = node.next_node
-      deleted_node = node
+      deleted_node = node.value
     end
 
     (index + 1).times do
@@ -152,21 +164,21 @@ class LinkedList
     deleted_node
   end
 
-  def find(key)
-    node = @head
-    # count = 0
+  def find_value(key)
+    node = self
     until node.next_node.nil?
-      return node.key if node.key == key
+      return node.value if node.key == key
 
-      # count += 1
       node = node.next_node
     end
-    puts 'Value does not exist.'
+    node.key == key ? puts("#{node.value}") : puts('Value does not exist.')
   end
 
   def find_index(key)
-    node = @head
+    node = self
     count = 0
+    return count if node.next_node.nil?
+
     until node.next_node.nil?
       return count if node.key == key
 
@@ -176,20 +188,44 @@ class LinkedList
     nil
   end
 
-  # def to_s
-  #   node = @head
-  #   string = ''
+  def key_list
+    array = []
+    node = self
 
-  #   size.times do
-  #     string += "( #{node.value} ) -> "
-  #     node = node.next_node
-  #   end
+    until node.next_node.nil?
+      array << node.key
+      node = node.next_node
+    end
+    array << node.key
+    array
+  end
 
-  #   puts string[0...(string.length - 4)]
-  # end
+  def value_list
+    array = []
+    node = self
+
+    until node.next_node.nil?
+      array << node.value
+      node = node.next_node
+    end
+    array << node.value
+    array
+  end
+
+  def list_array
+    node = self
+    array = []
+
+    size.times do
+      array << "#{node.key}, #{node.value}"
+      node = node.next_node unless node.next_node.nil?
+    end
+
+    array
+  end
 end
 
-class Node 
+class Node < LinkedList
   attr_accessor :key, :value, :next_node
 
   def initialize(key = nil, value = nil, next_node = nil)
@@ -200,3 +236,16 @@ class Node
 end
 
 hashmap = HashMap.new
+hashmap.set('larkin', 'cyber')
+hashmap.set('dan', 'cyber')
+hashmap.set('larkin', 'developer')
+hashmap.set('jonathon', 'cyber')
+hashmap.set('jamie', 'cyber')
+hashmap.set('jacob', 'sec')
+hashmap.set('joanne', 'sec')
+hashmap.set('debbie', 'tesa')
+hashmap.set('victoria', 'tesa')
+hashmap.set('randy', 'iso')
+hashmap.remove('dan')
+
+hashmap
