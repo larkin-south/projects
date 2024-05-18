@@ -55,7 +55,7 @@ class Tree
         return root.left
       end
 
-      root.value = inorder(root.right)
+      root.value = delete_inorder(root.right)
       delete(root.value, root.right)
     elsif root.value < input
       root.right = delete(input, root.right)
@@ -66,7 +66,7 @@ class Tree
     root
   end
 
-  def inorder(root)
+  def delete_inorder(root)
     root = root.left while root.left
     root.value
   end
@@ -87,11 +87,25 @@ class Tree
     queue = [@root]
     result = []
     until queue.empty?
-      result << queue[0].value if yield queue[0]
+      block_given? ? (result << queue[0].value if yield queue[0]) : result << queue[0].value
       queue << queue[0].left if queue[0].left
       queue << queue[0].right if queue[0].right
       queue.delete(queue[0])
     end
+
+    result
+  end
+
+  def preorder(root = @root)
+    return if root.nil?
+
+    # queue = [@root]
+    # result = []
+    # until queue.empty?
+    block_given? ? (result << root.value if yield root) : result << root.value
+    preorder(root.left)
+    preorder(root.right)
+    # end
 
     result
   end
@@ -111,5 +125,5 @@ test = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 # test.delete(4)
 # p test.build_tree(@data)
 # p test.find(7)
-puts test.level_order { |node| node.value < 10 }
+puts test.preorder
 test.pretty_print
