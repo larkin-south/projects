@@ -23,14 +23,12 @@ class Tree
 
     midpoint = array.length / 2
 
-    @root = Node.new(array[midpoint])
+    root = Node.new(array[midpoint])
 
-    @left = build_tree(array[...midpoint])
-    @right = build_tree(array[midpoint + 1..])
+    root.left = build_tree(array[...midpoint])
+    root.right = build_tree(array[midpoint + 1..])
 
-    # @left = left_side
-    # @right = right_side
-    @root
+    root
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
