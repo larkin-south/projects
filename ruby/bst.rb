@@ -81,6 +81,21 @@ class Tree
     end
   end
 
+  def level_order
+    return if @root.nil?
+
+    queue = [@root]
+    result = []
+    until queue.empty?
+      result << queue[0].value if yield queue[0]
+      queue << queue[0].left if queue[0].left
+      queue << queue[0].right if queue[0].right
+      queue.delete(queue[0])
+    end
+
+    result
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
@@ -95,5 +110,6 @@ test = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 # test.delete(1)
 # test.delete(4)
 # p test.build_tree(@data)
-p test.find(7)
+# p test.find(7)
+puts test.level_order { |node| node.value < 10 }
 test.pretty_print
