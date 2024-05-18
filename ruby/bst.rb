@@ -54,6 +54,9 @@ class Tree
       elsif root.right.nil?
         return root.left
       end
+
+      root.value = inorder(root.right)
+      delete(root.value, root.right)
     elsif root.value < input
       root.right = delete(input, root.right)
     else
@@ -61,6 +64,21 @@ class Tree
     end
 
     root
+  end
+
+  def inorder(root)
+    root = root.left while root.left
+    root.value
+  end
+
+  def find(input, root = @root)
+    if root.value == input
+      root
+    elsif root.value < input
+      find(input, root.right)
+    else
+      find(input, root.left)
+    end
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -75,5 +93,7 @@ test = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 # test.insert(10)
 # test.delete(7)
 # test.delete(1)
+# test.delete(4)
 # p test.build_tree(@data)
+p test.find(7)
 test.pretty_print
