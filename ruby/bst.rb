@@ -1,31 +1,46 @@
 require './merge_sort'
 
 class Node
+  attr_accessor :value, :left, :right
+
   def initialize(midpoint)
-    @data = midpoint
+    @value = midpoint
     @left = nil
     @right = nil
   end
 end
 
 class Tree
+  attr_accessor :root
+
   def initialize(array)
-    @array = array
-    @root = nil
+    @data = merge_sort(array.uniq)
+    @root = build_tree(@data)
   end
 
-  def build_tree
-    return if @array.nil?
+  def build_tree(array)
+    return if array.empty?
 
-    sorted_array = merge_sort(@array).uniq
+    midpoint = array.length / 2
 
-    midpoint = sorted_array.length / 2
+    @root = Node.new(array[midpoint])
 
-    root = Node.new(sorted_array[midpoint])
+    @left = build_tree(array[...midpoint])
+    @right = build_tree(array[midpoint + 1..])
 
-    left_side = sorted_array.slice(0, midpoint + 1).length
-    right_side = sorted_array.slice(midpoint + 1..).length
+    # @left = left_side
+    # @right = right_side
+    @root
   end
+
+  def pretty_print(node = @root, prefix = '', is_left = true)
+    pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
+    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
+    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
+  end
+ 
 end
 
-p test = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]).build_tree
+test = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+# p test.build_tree(@data)
+test.pretty_print
