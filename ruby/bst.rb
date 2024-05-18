@@ -31,16 +31,36 @@ class Tree
     root
   end
 
-  def insert(value)
-    return Node.new(value) if root.value.nil?
+  def insert(input, root = @root)
+    return Node.new(input) if root.nil?
 
-    if root.value == value
+    if root.value == input
       root
-    elsif root.value < value
-      root.right = insert(value)
+    elsif root.value < input
+      root.right = insert(input, root.right)
     else
-      root.left = insert(value)
+      root.left = insert(input, root.left)
     end
+
+    root
+  end
+
+  def delete(input, root = @root)
+    return root if root.nil?
+
+    if root.value == input
+      if root.left.nil?
+        return root.right
+      elsif root.right.nil?
+        return root.left
+      end
+    elsif root.value < input
+      root.right = delete(input, root.right)
+    else
+      root.left = delete(input, root.left)
+    end
+
+    root
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -52,5 +72,8 @@ class Tree
 end
 
 test = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+# test.insert(10)
+# test.delete(7)
+# test.delete(1)
 # p test.build_tree(@data)
 test.pretty_print
