@@ -72,6 +72,8 @@ class Tree
   end
 
   def find(input, root = @root)
+    return if root.nil?
+
     if root.value == input
       root
     elsif root.value < input
@@ -96,18 +98,80 @@ class Tree
     result
   end
 
-  def preorder(root = @root)
+  def preorder(root = @root, &block)
+    return [] if root.nil?
+
+    result = []
+    if block_given?
+      result << root.value if yield root
+    else
+      result << root.value
+    end
+
+    result << preorder(root.left, &block)
+    result << preorder(root.right, &block)
+
+    result.flatten
+  end
+
+  def inorder(root = @root, &block)
+    return [] if root.nil?
+
+    result = []
+    result << inorder(root.left, &block)
+
+    if block_given?
+      result << root.value if yield root
+    else
+      result << root.value
+    end
+
+    result << inorder(root.right, &block)
+    result.flatten
+  end
+
+  def postorder(root = @root, &block)
+    return [] if root.nil?
+
+    result = []
+    result << postorder(root.left, &block)
+    result << postorder(root.right, &block)
+
+    if block_given?
+      result << root.value if yield root
+    else
+      result << root.value
+    end
+
+    result.flatten
+  end
+
+  def height(input = root.value, root = find(input))
+    return -1 if root.nil?
+
+    left_height = height(input, root.left)
+    right_height = height(input, root.right)
+
+    left_height > right_height ? left_height + 1 : right_height + 1
+  end
+
+  def depth(input, root = @root, depth = 0)
     return if root.nil?
+    return depth if root.value == input
 
-    # queue = [@root]
-    # result = []
-    # until queue.empty?
-    block_given? ? (result << root.value if yield root) : result << root.value
-    preorder(root.left)
-    preorder(root.right)
-    # end
+    if root.value > input
+      depth(input, root.left, depth + 1)
+    else
+      depth(input, root.right, depth + 1)
+    end
+  end
 
-    result
+  def balanced?
+    (height(root.value, root.left) - height(root.value, root.right)).between?(-1, 1)
+  end
+
+  def rebalance
+    @root = build_tree(preorder)
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
@@ -115,15 +179,21 @@ class Tree
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.value}"
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
- 
 end
 
-test = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-# test.insert(10)
-# test.delete(7)
-# test.delete(1)
-# test.delete(4)
-# p test.build_tree(@data)
-# p test.find(7)
-puts test.preorder
+test = Tree.new(Array.new(15) { rand(1..100) })
+p test.balanced?
+p test.preorder
+p test.inorder
+p test.postorder
+
+test.pretty_print
+
+100.times { test.insert(rand(1..100)) }
+
+test.pretty_print
+p test.balanced?
+p test.rebalance
+p test.balanced?
+
 test.pretty_print
