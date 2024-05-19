@@ -156,7 +156,7 @@ class Tree
   end
 
   def depth(input, root = @root, depth = 0)
-    return if root.nil?
+    return depth -= 1 if root.nil?
     return depth if root.value == input
 
     if root.value > input
@@ -197,3 +197,4 @@ p test.rebalance
 p test.balanced?
 
 test.pretty_print
+test
