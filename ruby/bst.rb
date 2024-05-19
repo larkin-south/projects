@@ -195,6 +195,6 @@ test.pretty_print
 p test.balanced?
 p test.rebalance
 p test.balanced?
-
+p test.depth(12)
 test.pretty_print
 test
