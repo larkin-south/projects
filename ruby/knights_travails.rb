@@ -7,25 +7,31 @@ class Travails
     @routes = build_paths
   end
 
-  def build_paths(coord = @start)
+  def build_paths(coord = @start, step_to = nil)
     return if coord == @destination
 
     @routes = Position.new(coord)
+    # @routes.next_coords.delete(@start)
 
-    build_paths(@routes.next_coords) until @routes.next_coords.include?(@destination)
+    @routes.next_coords.each do |move|
+      @routes.step_to = build_paths(move) until @routes.next_coords.include?(@destination)
+    end
 
-    # coord
+    @routes
   end
 end
 
 class Position
-  attr_reader :current_position, :next_coords, :next_coord0, :next_coord1, :next_coord2,
+  attr_reader :current_position, :next_coords, :step_to, :next_coord0, :next_coord1, :next_coord2,
               :next_coord3, :next_coord4, :next_coord5, :next_coord6, :next_coord7
 
-  def initialize(array)
+  def initialize(array, step_to = nil)
     @current_position = array
-    @next_coords = [array[0] + 1, array[1] + 2], [array[0] + 2, array[1] + 1], [array[0] + 2, array[1] - 1], [array[0] + 1, array[1] - 2],
-                   [array[0] - 1, array[1] - 2], [array[0] - 2, array[1] - 1], [array[0] - 2, array[1] + 1], [array[0] - 1, array[1] + 2]
+    @next_coords = [array[0] + 1, array[1] + 2], [array[0] + 2, array[1] + 1],
+                   [array[0] + 2, array[1] - 1], [array[0] + 1, array[1] - 2],
+                   [array[0] - 1, array[1] - 2], [array[0] - 2, array[1] - 1],
+                   [array[0] - 2, array[1] + 1], [array[0] - 1, array[1] + 2]
+    # @next_step = step_to
   end
 end
 travels = Travails.new([3,3], [4,5])
