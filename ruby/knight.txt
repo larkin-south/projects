@@ -1,12 +1,13 @@
 each position has 8 potential moves
 
 when you move to a different spot, calculate the next 8 possible moves (maybe 7 if we subtract where it came from)
-	exclude values that may go off the board
-	stop if we the destination is reached
+	exclude values that may go off the board (negative or >= 8)
+	stop if the destination is reached
 
-create a bst for each possible move
+create a bst for each possible move (recurse)
 	add nodes based on potential moves from there
 	place array into the value for the node, create more nodes based on +1+2, +2+1,-1+2, etc. until value == destination
+	when array used to create node, add to array and check against it to ensure it hasn't been visited already
 
 input will be an array coordinate(e.g., [0, 0]) as root
 

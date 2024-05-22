@@ -1,5 +1,6 @@
 class Travails
   attr_accessor :routes
+  attr_reader :destination
 
   def initialize(beginning, endpoint)
     @start = beginning
@@ -10,42 +11,71 @@ class Travails
   def build_paths(coord = @start, visits = [])
     return Position.new(coord) if coord == @destination
 
-    # @routes = Position.new(coord)
-    # # @routes.next_coords.delete(@start)
-
-    # @routes.next_coords.each do |move|
-    #   @routes.step_to = build_paths(move) until @routes.next_coords.include?(@destination)
-    # end
-
-    # @routes
-
     position = Position.new(coord)
-    next_coords = [coord[0] + 1, coord[1] + 2], [coord[0] + 2, coord[1] + 1],
-                  [coord[0] + 2, coord[1] - 1], [coord[0] + 1, coord[1] - 2],
-                  [coord[0] - 1, coord[1] - 2], [coord[0] - 2, coord[1] - 1],
-                  [coord[0] - 2, coord[1] + 1], [coord[0] - 1, coord[1] + 2]
+    visits << coord
+    next_coords = calculate_coordinates(coord)
 
     next_coords.filter! { |value| value.all? { |entry| entry.positive? && entry < 8 } }
-    # coord_split = next_coords.slice!(0..(next_coords.length / 2))
-    next_coords.each do |placement|
-      visits.any? { |value| value == placement } ? next : visits << placement
+    next_coords.each_with_index do |placement, index|
+      next if visits.any? { |value| value == placement }
 
-      position.next_step = build_paths(placement, visits)
+      position.instance_variable_set("@next_coord#{index}", build_paths(placement, visits))
     end
 
     position
   end
+
+  def calculate_coordinates(coord)
+    new_coords = [coord[0] + 1, coord[1] + 2], [coord[0] + 2, coord[1] + 1],
+                 [coord[0] + 2, coord[1] - 1], [coord[0] + 1, coord[1] - 2],
+                 [coord[0] - 1, coord[1] - 2], [coord[0] - 2, coord[1] - 1],
+                 [coord[0] - 2, coord[1] + 1], [coord[0] - 1, coord[1] + 2]
+  end
+
+  # def pretty_print(node = @routes, prefix = '', is_left = true, index = 0)
+  #   while index < 8
+  #     # pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
+  #     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.current_position}"
+  #     pretty_print(node.next_coord[index], "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.next_coord[index]
+  #     index += 1
+  #   end
+  # end
+
+  # def level_order(index = 0)
+  #   return if @routes.nil?
+
+  #   queue = [@routes]
+  #   result = []
+  #   while index < 8
+  #     until queue.empty?
+  #       block_given? ? (result << queue[index].current_position if yield queue[index]) : result << queue[index].current_position
+  #       # queue << queue[0].left if queue[0].left
+  #       queue << queue[index].next_coord0 # if queue[0].right
+  #       queue.delete(queue[index])
+  #     end
+  #     index += 1
+  #   end
+
+  #   result
+  # end
 end
 
 class Position
   attr_accessor :current_position, :next_coords, :next_step, :step_to, :next_coord0, :next_coord1, :next_coord2,
-              :next_coord3, :next_coord4, :next_coord5, :next_coord6, :next_coord7
+                :next_coord3, :next_coord4, :next_coord5, :next_coord6, :next_coord7
 
   def initialize(array)
     @current_position = array
-    @next_step = nil
-    # @next_step = step_to
   end
 end
 travels = Travails.new([3,3], [4,5])
-p travels.routes.each
+p travels.routes
+# p travels.level_order { |item| item == @destination }
+# p travels.level_order { |value| value == travels.destination}
+# p travels.routes.next_coord0
+# p travels.routes.next_coord1
+
+# p travels.routes.next_coord2
+
+# p travels.routes.next_coord3
+
