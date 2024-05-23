@@ -8,28 +8,40 @@ class Travails
     @routes = build_paths
   end
 
-  def build_paths(coord = @start, visits = [])
+  def build_paths(coord = @start, visits = Set.new)
     return Position.new(coord) if coord == @destination
+    return if coord.nil?
 
-    position = Position.new(coord)
-    visits << coord
+    routes = Position.new(coord)
+    visits.add(coord)
     next_coords = calculate_coordinates(coord)
 
     next_coords.filter! { |value| value.all? { |entry| entry.positive? && entry < 8 } }
+    next_coords.map! do |value|
+      if value == @destination
+        visits.add(Position.new(value))
+        value = nil
+      end
+      value
+    end
     next_coords.each_with_index do |placement, index|
-      next if visits.any? { |value| value == placement }
+      next if visits.include?(@destination)
+      next if placement.nil?
 
-      position.instance_variable_set("@next_coord#{index}", build_paths(placement, visits))
+      next_routes = build_paths(placement, visits.clone) #unless placement.nil?
+
+      routes.instance_variable_set("@next_coord#{index}", next_routes)
+
     end
 
-    position
+    routes
   end
 
   def calculate_coordinates(coord)
-    new_coords = [coord[0] + 1, coord[1] + 2], [coord[0] + 2, coord[1] + 1],
-                 [coord[0] + 2, coord[1] - 1], [coord[0] + 1, coord[1] - 2],
-                 [coord[0] - 1, coord[1] - 2], [coord[0] - 2, coord[1] - 1],
-                 [coord[0] - 2, coord[1] + 1], [coord[0] - 1, coord[1] + 2]
+    [[coord[0] + 1, coord[1] + 2], [coord[0] + 2, coord[1] + 1],
+    [coord[0] + 2, coord[1] - 1], [coord[0] + 1, coord[1] - 2],
+    [coord[0] - 1, coord[1] - 2], [coord[0] - 2, coord[1] - 1],
+    [coord[0] - 2, coord[1] + 1], [coord[0] - 1, coord[1] + 2]]
   end
 
   # def pretty_print(node = @routes, prefix = '', is_left = true, index = 0)
@@ -68,7 +80,7 @@ class Position
     @current_position = array
   end
 end
-travels = Travails.new([3,3], [4,5])
+travels = Travails.new([3, 3], [4, 5])
 p travels.routes
 # p travels.level_order { |item| item == @destination }
 # p travels.level_order { |value| value == travels.destination}
