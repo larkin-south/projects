@@ -3,6 +3,7 @@ each position has 8 potential moves
 when you move to a different spot, calculate the next 8 possible moves (maybe 7 if we subtract where it came from)
 	exclude values that may go off the board (negative or >= 8)
 	stop if the destination is reached
+	add to array tracking visited spots if it isn't destination
 
 create a bst for each possible move (recurse)
 	add nodes based on potential moves from there

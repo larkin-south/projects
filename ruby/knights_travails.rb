@@ -19,19 +19,17 @@ class Travails
     next_coords.filter! { |value| value.all? { |entry| entry.positive? && entry < 8 } }
     next_coords.map! do |value|
       if value == @destination
-        visits.add(Position.new(value))
+        visits.add(value)
         value = nil
       end
       value
     end
     next_coords.each_with_index do |placement, index|
-      next if visits.include?(@destination)
-      next if placement.nil?
+      next if visits.include?(@destination) || placement.nil?
 
       next_routes = build_paths(placement, visits.clone) #unless placement.nil?
 
       routes.instance_variable_set("@next_coord#{index}", next_routes)
-
     end
 
     routes
