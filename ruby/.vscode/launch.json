@@ -8,7 +8,7 @@
             "name": "Debug Local File",
             "type": "Ruby",
             "request": "launch",
-            "program": "${workspaceRoot}/sample_knights.rb"
+            "program": "${workspaceRoot}/new_knights_travails.rb"
         },
         {
             "type": "rdbg",

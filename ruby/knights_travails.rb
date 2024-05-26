@@ -14,32 +14,39 @@ class Travails
 
     routes = Position.new(coord)
     visits.add(coord)
-    next_coords = calculate_coordinates(coord)
+    calculate_coordinates(routes, coord)
 
-    next_coords.filter! { |value| value.all? { |entry| entry.positive? && entry < 8 } }
-    next_coords.map! do |value|
-      if value == @destination
-        visits.add(value)
-        value = nil
-      end
-      value
+    # next_coords.filter! { |value| value.all? { |entry| entry.positive? && entry < 8 } }
+    # next_coords.map! do |value|
+    #   if value == @destination
+    #     visits.add(value)
+    #     value = nil
+    #   end
+    #   value
+    # end
+    8.times do |i|
+      next if visits.include?(@destination) || routes.instance_variable_get("@next_coord#{i}").nil?
+
+      next_routes = build_paths(routes.instance_variable_get("@next_coord#{i}"), visits.clone)
+      routes.instance_variable_set("@next_coord#{i}", next_routes)
     end
-    next_coords.each_with_index do |placement, index|
-      next if visits.include?(@destination) || placement.nil?
+      
 
-      next_routes = build_paths(placement, visits.clone) #unless placement.nil?
+       #unless placement.nil?
 
-      routes.instance_variable_set("@next_coord#{index}", next_routes)
-    end
-
+      
     routes
   end
 
-  def calculate_coordinates(coord)
-    [[coord[0] + 1, coord[1] + 2], [coord[0] + 2, coord[1] + 1],
-    [coord[0] + 2, coord[1] - 1], [coord[0] + 1, coord[1] - 2],
-    [coord[0] - 1, coord[1] - 2], [coord[0] - 2, coord[1] - 1],
-    [coord[0] - 2, coord[1] + 1], [coord[0] - 1, coord[1] + 2]]
+  def calculate_coordinates(routes, coord)
+    routes.next_coord0 = [coord[0] + 1, coord[1] + 2]
+    routes.next_coord1 = [coord[0] + 2, coord[1] + 1]
+    routes.next_coord2 = [coord[0] + 2, coord[1] - 1]
+    routes.next_coord3 = [coord[0] + 1, coord[1] - 2]
+    routes.next_coord4 = [coord[0] - 1, coord[1] - 2]
+    routes.next_coord5 = [coord[0] - 2, coord[1] - 1]
+    routes.next_coord6 = [coord[0] - 2, coord[1] + 1]
+    routes.next_coord7 = [coord[0] - 1, coord[1] + 2]
   end
 
   # def pretty_print(node = @routes, prefix = '', is_left = true, index = 0)
