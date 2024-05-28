@@ -1,6 +1,6 @@
 class Travails
   attr_accessor :routes
-  attr_reader :destination
+  attr_reader :end
 
   def initialize(origin, destination)
     @start = origin
@@ -9,23 +9,40 @@ class Travails
   end
 
   def build_paths(current = @start, visits = Set.new)
-    return Knight.new(current) if current == @destination
+    return Knight.new(current) if current == @end
 
     routes = Knight.new(current)
-    calculate_coordinates(routes, current)
+    visits.add(current)
+    paths = calculate_coordinates(routes, current)
+
+    8.times do |i|
+      next if paths[i].any? { |value| value.negative? || value >= 8 }
+      next if visits.any? { |value| value == paths[i] }
+
+      routes.instance_variable_set("@option#{i}", build_paths(paths[i], visits))
+    end
 
     routes
   end
 
-  def calculate_coordinates(routes, current)
-    routes.option0 = Knight.new([current[0] + 1, current[1] + 2])
-    routes.option1 = Knight.new([current[0] + 2, current[1] + 1])
-    routes.option2 = Knight.new([current[0] + 2, current[1] - 1])
-    routes.option3 = Knight.new([current[0] + 1, current[1] - 2])
-    routes.option4 = Knight.new([current[0] - 1, current[1] - 2])
-    routes.option5 = Knight.new([current[0] - 2, current[1] - 1])
-    routes.option6 = Knight.new([current[0] - 2, current[1] + 1])
-    routes.option7 = Knight.new([current[0] - 1, current[1] + 2])
+  def calculate_coordinates(current)
+    # routes.option0 = Knight.new([current[0] + 1, current[1] + 2])
+    # routes.option1 = Knight.new([current[0] + 2, current[1] + 1])
+    # routes.option2 = Knight.new([current[0] + 2, current[1] - 1])
+    # routes.option3 = Knight.new([current[0] + 1, current[1] - 2])
+    # routes.option4 = Knight.new([current[0] - 1, current[1] - 2])
+    # routes.option5 = Knight.new([current[0] - 2, current[1] - 1])
+    # routes.option6 = Knight.new([current[0] - 2, current[1] + 1])
+    # routes.option7 = Knight.new([current[0] - 1, current[1] + 2])
+
+    [[current[0] + 1, current[1] + 2],
+     [current[0] + 2, current[1] + 1],
+     [current[0] + 2, current[1] - 1],
+     [current[0] + 1, current[1] - 2],
+     [current[0] - 1, current[1] - 2],
+     [current[0] - 2, current[1] - 1],
+     [current[0] - 2, current[1] + 1],
+     [current[0] - 1, current[1] + 2]]
   end
 end
 
