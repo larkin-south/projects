@@ -11,12 +11,12 @@ class Travails
   def build_paths(current = @origin, last = nil, visits = Set.new)
     if current == @destination
       knight = Knight.new(current)
-      knight.previous = last
+      # knight.previous = last
       return knight
     end
 
     routes = Knight.new(current)
-    routes.previous = last
+    # routes.previous = last
     visits.add(current)
     paths = calculate_coordinates(current)
 
@@ -50,26 +50,25 @@ class Travails
     ]
   end
 
-  def shortest_path
-    paths = []
-
+  def shortest_path(paths = [])
     8.times do |i|
       current_path = routes.instance_variable_get("@option#{i}")
       next if current_path.nil?
 
       if current_path.current_position == @destination
-        paths << current_path.current_position
+        paths << current_path
         return paths
       end
-      # shortest_path(curre)
     end
+
+    paths
   end
 end
 
 class Knight
   attr_accessor :current_position, :option0, :option1, :option2,
                 :option3, :option4, :option5, :option6, :option7,
-                :visits, :previous
+                :visits#, :previous
 
   def initialize(array)
     @current_position = array
@@ -78,4 +77,6 @@ end
 travels = Travails.new([3, 3], [4, 5])
 p travels.routes
 p travels.routes.instance_variables
-p travels.shortest_path
+# test = travels.shortest_path
+# p test
+# p test.previous
