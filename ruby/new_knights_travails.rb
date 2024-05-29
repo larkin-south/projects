@@ -8,25 +8,31 @@ class Travails
     @routes = build_paths
   end
 
-  def build_paths(current = @origin, last = nil, visits = Set.new)
+  def build_paths(current = @origin, parent = nil, visits = Set.new)
     if current == @destination
       knight = Knight.new(current)
-      # knight.previous = last
+      knight.previous = parent
       return knight
     end
 
     routes = Knight.new(current)
-    # routes.previous = last
+    routes.previous = parent
     visits.add(current)
-    paths = calculate_coordinates(current)
+    # paths = calculate_coordinates(current)
+    queue = []
 
-    8.times do |i|
-      if paths[i].any? { |value| value.negative? || value >= 8 } || visits.include?(paths[i])
-        routes.instance_variable_set("@option#{i}", nil)
-        next
+    until queue.empty?
+      current_node = queue.shift
+      paths = calculate_coordinates(current_node)
+      paths.each { |coord| queue << coord }
+      8.times do |i|
+        if paths[i].any? { |value| value.negative? || value >= 8 } || visits.include?(paths[i])
+          routes.instance_variable_set("@option#{i}", nil)
+          next
+        end
+
+        # routes.instance_variable_set("@option#{i}", build_paths(paths[i], routes, visits))
       end
-
-      routes.instance_variable_set("@option#{i}", build_paths(paths[i], routes, visits))
     end
 
     routes
@@ -51,24 +57,26 @@ class Travails
   end
 
   def shortest_path(paths = [])
-    8.times do |i|
-      current_path = routes.instance_variable_get("@option#{i}")
-      next if current_path.nil?
+    until paths.empty?
+      8.times do |i|
+        current_path = routes.instance_variable_get("@option#{i}")
+        next if current_path.nil?
 
-      if current_path.current_position == @destination
-        paths << current_path
-        return paths
+        if current_path.current_position == @destination
+          paths << current_path
+          return paths
+        end
       end
     end
 
-    paths
+    nil
   end
 end
 
 class Knight
   attr_accessor :current_position, :option0, :option1, :option2,
                 :option3, :option4, :option5, :option6, :option7,
-                :visits#, :previous
+                :visits, :previous
 
   def initialize(array)
     @current_position = array
@@ -77,6 +85,6 @@ end
 travels = Travails.new([3, 3], [4, 5])
 p travels.routes
 p travels.routes.instance_variables
-# test = travels.shortest_path
+test = travels.shortest_path
 # p test
 # p test.previous
