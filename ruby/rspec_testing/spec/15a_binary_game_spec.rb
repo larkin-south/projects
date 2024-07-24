@@ -130,6 +130,9 @@ describe BinaryGame do
 
     context 'when user inputs an incorrect value once, then a valid input' do
       before do
+        invalid_input = '12'
+        error_message = "Input error! Please enter a number between #{min} or #{max}."
+        allow(game_input).to receive(player_input).with(invalid_input).and_return(error_message)
       end
 
       xit 'completes loop and displays error message once' do
