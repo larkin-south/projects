@@ -130,20 +130,34 @@ describe BinaryGame do
 
     context 'when user inputs an incorrect value once, then a valid input' do
       before do
+        valid_input = '8'
         invalid_input = '12'
-        error_message = "Input error! Please enter a number between #{min} or #{max}."
-        allow(game_input).to receive(player_input).with(invalid_input).and_return(error_message)
+        allow(game_input).to receive(:gets).and_return(invalid_input, valid_input)
       end
 
-      xit 'completes loop and displays error message once' do
+      it 'completes loop and displays error message once' do
+        min = game_input.instance_variable_get(:@minimum)
+        max = game_input.instance_variable_get(:@maximum)
+        error_message = "Input error! Please enter a number between #{min} or #{max}."
+        expect(game_input).to receive(:puts).with(error_message).once
+        game_input.player_input(min, max)
       end
     end
 
     context 'when user inputs two incorrect values, then a valid input' do
       before do
+        invalid_input1 = '33'
+        invalid_input2 = 'asdf'
+        valid_input = '2'
+        allow(game_input).to receive(:gets).and_return(invalid_input1, invalid_input2, valid_input)
       end
 
-      xit 'completes loop and displays error message twice' do
+      it 'completes loop and displays error message twice' do
+        min = game_input.instance_variable_get(:@minimum)
+        max = game_input.instance_variable_get(:@maximum)
+        error_message = "Input error! Please enter a number between #{min} or #{max}."
+        expect(game_input).to receive(:puts).with(error_message).twice
+        game_input.player_input(min, max)
       end
     end
   end
@@ -155,16 +169,20 @@ describe BinaryGame do
   describe '#verify_input' do
     # Located inside #player_input (Looping Script Method)
     # Query Method -> Test the return value
-
+    subject(:new_game) { described_class.new(1, 10) }
     # Note: #verify_input will only return a number if it is between?(min, max)
 
     context 'when given a valid input as argument' do
       xit 'returns valid input' do
+        valid_input = '3'
+        allow(new_game).to receive(:gets).and_return(valid_input)
       end
     end
 
     context 'when given invalid input as argument' do
       xit 'returns nil' do
+        invalid_input = 'a'
+        allow(new_game).to receive(:gets).and_return(invalid_input)
       end
     end
   end
