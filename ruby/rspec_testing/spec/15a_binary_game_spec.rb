@@ -173,16 +173,22 @@ describe BinaryGame do
     # Note: #verify_input will only return a number if it is between?(min, max)
 
     context 'when given a valid input as argument' do
-      xit 'returns valid input' do
-        valid_input = '3'
-        allow(new_game).to receive(:gets).and_return(valid_input)
+      it 'returns valid input' do
+        valid_input = 3
+        min = new_game.instance_variable_get(:@minimum)
+        max = new_game.instance_variable_get(:@maximum)
+        check = new_game.verify_input(min, max, valid_input)
+        expect(check).to eq(valid_input)
       end
     end
 
     context 'when given invalid input as argument' do
-      xit 'returns nil' do
-        invalid_input = 'a'
-        allow(new_game).to receive(:gets).and_return(invalid_input)
+      it 'returns nil' do
+        invalid_input = 100
+        min = new_game.instance_variable_get(:@minimum)
+        max = new_game.instance_variable_get(:@maximum)
+        check = new_game.verify_input(min, max, invalid_input)
+        expect(check).to be_nil
       end
     end
   end
@@ -274,7 +280,11 @@ describe BinaryGame do
 
     # Write a test for the following context.
     context 'when game minimum and maximum is 100 and 600' do
-      xit 'returns 9' do
+      subject(:game600) { described_class.new(100, 600) }
+
+      it 'returns 9' do
+        max = game600.maximum_guesses
+        expect(max).to eq(9)
       end
     end
   end
@@ -332,7 +342,13 @@ describe BinaryGame do
 
     # Write a test for the following context.
     context 'when game_over? is false five times' do
-      xit 'calls display_turn_order five times' do
+      before do
+        allow(search_display).to receive(:game_over?).and_return(false, false, false, false, false, true)
+      end
+
+      it 'calls display_turn_order five times' do
+        expect(game_display).to receive(:display_turn_order).with(search_display).exactly(5).times
+        game_display.display_binary_search(search_display)
       end
     end
   end
