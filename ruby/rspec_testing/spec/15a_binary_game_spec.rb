@@ -364,21 +364,33 @@ describe BinaryGame do
     #  by calling #display_guess.
 
     # Create a new subject and an instance_double for BinarySearch.
+    subject(:game5) { described_class.new(1, 50) }
+    let(:search) { instance_double(BinarySearch) }
 
     before do
       # You'll need to create a few method stubs.
+      allow(search).to receive(:make_guess)
+      allow(search).to receive(:update_range)
+      allow(game5).to receive(:display_guess)
+
+      allow(search).to receive(:game_over?)
     end
 
     # Command Method -> Test the change in the observable state
-    xit 'increases guess_count by one' do
+    it 'increases guess_count by one' do
+      expect { game5.display_turn_order(search) }.to change { game5.instance_variable_get(:@guess_count) }.by(1)
     end
 
     # Method with Outgoing Command -> Test that a message is sent
-    xit 'sends make_guess' do
+    it 'sends make_guess' do
+      expect(search).to receive(:make_guess).once
+      game5.display_turn_order(search)
     end
 
     # Method with Outgoing Command -> Test that a message is sent
-    xit 'sends update_range' do
+    it 'sends update_range' do
+      expect(search).to receive(:update_range).once
+      game5.display_turn_order(search)
     end
 
     # Using method expectations can be confusing. Stubbing the methods above
@@ -390,7 +402,6 @@ describe BinaryGame do
     # paragraph, move it to the before hook, and run the tests.
     # All of the tests should continue to pass. Replace 'binary_search_turn'
     # with whatever you named your BinarySearch instance double if necessary.
-    # allow(binary_search_turn).to receive(:game_over?)
 
     # Now, in the lib/15a_binary_game.rb file, comment out either line,
     # binary_search.make_guess or binary_search.update_range. Resave the file
