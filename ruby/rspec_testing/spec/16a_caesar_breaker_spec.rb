@@ -45,7 +45,7 @@ describe CaesarBreaker do
 
     # Method with Outgoing Command -> Test that a message is sent
     it 'sends translate 26 times' do
-      expect(phrase).to receive(:translate).exactly(26).times
+      expect(translator).to receive(:translate).exactly(26).times
       phrase.create_decrypted_messages
     end
   end
