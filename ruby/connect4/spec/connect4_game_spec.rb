@@ -1,10 +1,10 @@
 #7w 6h
 require '../lib/game.rb'
-require '../lib/cage.rb'
+require '../lib/piece.rb'
 
 describe Game do
-  subject(:game) { described_class.new }
-  let(:cage) { instance_double(Cage) }
+  subject(:game) { described_class.new('player1', 'player2') }
+  let(:piece) { instance_double(Piece) }
 
   describe '#play_game' do
     context 'when game is over' do
@@ -20,7 +20,7 @@ describe Game do
     end
   end
 
-  describe '#game_over' do
+  describe '#game_over?' do
 
   end
 
@@ -74,6 +74,65 @@ describe Game do
     #     expect(game).to receive(:gets).and_return(0, 7)
     #   end
     # end
+  end
+
+  describe '#place_piece' do
+    context 'when #player_input returns 3 for player1' do
+      it "adds '1' to cage[2]" do
+        cage = game.instance_variable_get(:@cage)
+        expect { game.place_piece(3) }.to change { cage[2].last }.to eq(1)
+      end
+    end
+
+    context 'when #player_input returns 5 for player2' do
+      before do
+        game.swap_players
+      end
+      it "adds '2' to cage[4]" do
+        cage = game.instance_variable_get(:@cage)
+        expect { game.place_piece(5) }.to change { cage[4].last }.to eq(2)
+      end
+    end
+  end
+
+  describe 'vertical_win?' do
+    context 'when a player has 4 consecutive pieces in the same column' do
+      before do
+        game.instance_variable_set(:@cage, [[], [], [1, 2, 1, 1, 1, 1], [], [], [], []])
+      end
+      it 'returns true' do
+        expect(game.vertical_win?).to be true
+      end
+    end
+
+    context 'when a player does not have 4 consecutive pieces in the same column' do
+      before do
+        game.instance_variable_set(:@cage, [[], [], [1, 2, 1, 1], [], [], [], []])
+      end
+      it 'returns false' do
+        expect(game.vertical_win?).to be false
+      end
+    end
+  end
+
+  describe 'horizontal_win?' do
+    context 'when a player has 4 consecutive pieces in the same row' do
+      before do
+        game.instance_variable_set(:@cage, [[1, 1], [2, 1], [2, 1], [1, 1], [1], [1], []])
+      end
+      it 'returns true' do
+        expect(game.horizontal_win?).to be true
+      end
+    end
+
+    context 'when a player does not have 4 consecutive pieces in the same row' do
+      before do
+        game.instance_variable_set(:@cage, [[1, 2], [2, 1], [2, 1], [1, 1], [1], [1], []])
+      end
+      it 'returns true' do
+        expect(game.horizontal_win?).to be false
+      end
+    end
   end
 end
 
