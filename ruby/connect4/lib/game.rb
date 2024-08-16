@@ -1,9 +1,11 @@
+require 'pry-byebug'
+
 class Game
   def initialize(p1 = nil, p2 = nil)
     @p1 = p1
     @p2 = p2
     @active_player = @p1
-    @cage = [[], [], [], [], [], [], []]
+    @cage = Array.new(7) { Array.new(6, ' ') }#[[], [], [], [], [], [], []]
   end
 
   def play_game
@@ -17,7 +19,8 @@ class Game
   end
 
   def place_piece(column)
-    @cage[column - 1] << (@active_player == @p1 ? 1 : 2)
+    row = @cage[column - 1].find_index { |item| item == ' ' }
+    @cage[column - 1][row] = (@active_player == @p1 ? 1 : 2)
   end
 
   def swap_players
@@ -44,5 +47,61 @@ class Game
       return true if result.join.match?(regex)
     end
     false
+  end
+
+  def left_diagonal_win?
+    regex = @active_player == @p1 ? /1{4}/ : /2{4}/
+
+    3.times do |row|
+      result = nil
+      4.times do |column|
+        result = left_collect_diagonal_pieces(row, column)
+        # p result
+        return true if result.join.match?(regex)
+      end
+    end
+    false
+    #over 4 up 3
+  end
+
+  def left_collect_diagonal_pieces(row, column)
+    pieces = []
+    pieces << @cage[column][row]
+    until column > 6
+      column += 1
+      row += 1
+      pieces << (@cage[column][row].nil? ? ' ' : @cage[column][row])
+    end
+    # p pieces
+    pieces
+  end
+
+  def right_diagonal_win?
+    regex = @active_player == @p1 ? /1{4}/ : /2{4}/
+
+    3.times do |row|
+      result = nil
+      6.downto(3) do |column|
+        result = right_collect_diagonal_pieces(row, column)
+        return true if result.join.match?(regex)
+      end
+    end
+    false
+  end
+
+  def right_collect_diagonal_pieces(row, column)
+    pieces = []
+    pieces << @cage[column][row]
+    until column < 3
+      column -= 1
+      row += 1
+      pieces << @cage[column][row]
+    end
+    # p pieces
+    pieces
+  end
+
+  def draw?
+
   end
 end
