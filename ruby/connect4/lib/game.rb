@@ -1,5 +1,3 @@
-require 'pry-byebug'
-
 class Game
   def initialize(p1 = nil, p2 = nil)
     @p1 = p1
@@ -39,29 +37,35 @@ class Game
   def horizontal_win?
     regex = @active_player == @p1 ? /1{4}/ : /2{4}/
     6.times do |row|
-      result = []
-      7.times do |column|
-        result << @cage[column][row]
-      end
-
+      result = collect_horizontal_pieces(row)
       return true if result.join.match?(regex)
     end
     false
   end
 
+  def collect_horizontal_pieces(row)
+    pieces = []
+    column = 0
+    pieces << @cage[column][row]
+    until column > 5
+      column += 1
+      break unless @cage[column][row] == ' ' || !@cage[column][row].nil?
+
+      pieces << @cage[column][row]
+    end
+    pieces
+  end
+
   def left_diagonal_win?
     regex = @active_player == @p1 ? /1{4}/ : /2{4}/
-
     3.times do |row|
       result = nil
       4.times do |column|
         result = left_collect_diagonal_pieces(row, column)
-        # p result
         return true if result.join.match?(regex)
       end
     end
     false
-    #over 4 up 3
   end
 
   def left_collect_diagonal_pieces(row, column)
@@ -70,15 +74,15 @@ class Game
     until column > 6
       column += 1
       row += 1
-      pieces << (@cage[column][row].nil? ? ' ' : @cage[column][row])
+      break unless @cage[column][row] == ' ' || !@cage[column][row].nil?
+
+      pieces << @cage[column][row]
     end
-    # p pieces
     pieces
   end
 
   def right_diagonal_win?
     regex = @active_player == @p1 ? /1{4}/ : /2{4}/
-
     3.times do |row|
       result = nil
       6.downto(3) do |column|
@@ -95,13 +99,14 @@ class Game
     until column < 3
       column -= 1
       row += 1
+      break unless @cage[column][row] == ' ' || !@cage[column][row].nil?
+
       pieces << @cage[column][row]
     end
-    # p pieces
     pieces
   end
 
   def draw?
-
+    
   end
 end
