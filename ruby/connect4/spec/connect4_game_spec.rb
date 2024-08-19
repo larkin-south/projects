@@ -1,15 +1,13 @@
 #7w 6h
 require '../lib/game.rb'
-require '../lib/piece.rb'
 
 describe Game do
   subject(:game) { described_class.new('player1', 'player2') }
-  let(:piece) { instance_double(Piece) }
 
   describe '#play_game' do
     context 'when game is over' do
       before do
-        game.instance_variable_set(:@active_player, :@p1)
+        allow(game).to receive(:player_input).and_return(1)
       end
 
       it 'breaks loop, puts endgame text' do
@@ -21,7 +19,11 @@ describe Game do
   end
 
   describe '#game_over?' do
-
+    context 'when player has won' do
+      it 'returns true' do
+        # expect(game.game_over?).to be true
+      end
+    end
   end
 
   describe '#swap_players' do
@@ -175,6 +177,26 @@ describe Game do
       end
       it 'returns false' do
         expect(game.right_diagonal_win?).to be false
+      end
+    end
+  end
+
+  describe 'draw?' do
+    context 'when the cage is full of 1s and/or 2s' do
+      before do
+        game.instance_variable_set(:@cage, Array.new(7) { Array.new(6, 1) })
+      end
+      it 'returns true' do
+        expect(game.draw?).to be true
+      end
+    end
+
+    context 'when the cage has empty spaces' do
+      before do
+        game.instance_variable_set(:@cage, [[1, 2, 2], [2, 2, ' ']])
+      end
+      it 'returns false' do
+        expect(game.draw?).to be false
       end
     end
   end

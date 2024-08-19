@@ -1,7 +1,9 @@
-require './lib/caesar_cipher'
+require '../lib/caesar_cipher'
 
-describe "#ord_values" do
-  it "output should not be a char type" do
-    expect((ord_values('I')).not_to be_a(Symbol))
+describe "#shifts" do
+  subject(:cipher) { caesar_cipher('testing', 5) }
+
+  it "input between 97 & 122" do
+    expect(cipher).to receive(:shifts)
   end
 end

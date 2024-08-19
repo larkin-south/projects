@@ -1,22 +1,31 @@
 class Game
-  def initialize(p1 = nil, p2 = nil)
+  def initialize(p1, p2)
     @p1 = p1
     @p2 = p2
     @active_player = @p1
-    @cage = Array.new(7) { Array.new(6, ' ') }#[[], [], [], [], [], [], []]
+    @cage = Array.new(7) { Array.new(6, ' ') }
+    play_game
   end
 
   def play_game
-    swap_players until game_over?
+    loop do
+      place_piece
+      break if game_over?
+
+      swap_players
+    end
 
     puts "#{@active_player} wins!"
   end
 
   def player_input
+    puts "#{@active_player}, enter a column number 1-7:"
     $stdin.gets.chomp.to_i
   end
 
-  def place_piece(column)
+  def place_piece
+    column = 0
+    column = player_input until column.between?(1, 7)
     row = @cage[column - 1].find_index { |item| item == ' ' }
     @cage[column - 1][row] = (@active_player == @p1 ? 1 : 2)
   end
@@ -26,7 +35,7 @@ class Game
   end
 
   def game_over?
-    # true
+    vertical_win? || horizontal_win? || left_diagonal_win? || right_diagonal_win? ? true : false
   end
 
   def vertical_win?
@@ -107,6 +116,6 @@ class Game
   end
 
   def draw?
-    
+    @cage.none? { |column| column.any? { |row| row == ' ' } }
   end
 end
