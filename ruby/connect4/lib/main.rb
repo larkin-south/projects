@@ -1,4 +1,4 @@
-require './game.rb'
+require_relative './game.rb'
 
 puts 'Player 1, enter a name:'
 player1 = gets.chomp

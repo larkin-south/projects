@@ -1,5 +1,5 @@
 #7w 6h
-require '../lib/game.rb'
+require_relative '../lib/game.rb'
 
 describe Game do
   subject(:game) { described_class.new('player1', 'player2') }
@@ -18,13 +18,13 @@ describe Game do
     end
   end
 
-  describe '#game_over?' do
-    context 'when player has won' do
-      it 'returns true' do
-        # expect(game.game_over?).to be true
-      end
-    end
-  end
+  # describe '#game_over?' do
+  #   context 'when player has won' do
+  #     it 'returns true' do
+  #       # expect(game.game_over?).to be true
+  #     end
+  #   end
+  # end
 
   describe '#swap_players' do
     context 'when player 1 round is over' do
@@ -71,30 +71,30 @@ describe Game do
       end
     end
 
-    # context 'when player enters number <1 or >7' do
-    #   it 'loops until correct input' do
-    #     expect(game).to receive(:gets).and_return(0, 7)
-    #   end
-    # end
+    context 'when player enters number <1 or >7' do
+      it 'loops until correct input' do
+        expect(game).to receive(:gets).and_return(0, 7)
+      end
+    end
   end
 
   describe '#place_piece' do
     context 'when #player_input returns 3 for player1' do
-      # it "adds '1' to cage[2]" do
-      #   cage = game.instance_variable_get(:@cage)
-      #   # row = cage[2].find_index
-      #   expect { game.place_piece(3) }.to change { cage[2] }.by(1)
-      # end
+      it "adds '1' to cage[2]" do
+        cage = game.instance_variable_get(:@cage)
+        # row = cage[2].find_index
+        expect { game.place_piece(3) }.to change { cage[2] }.by(1)
+      end
     end
 
     context 'when #player_input returns 5 for player2' do
       before do
         game.swap_players
       end
-      # it "adds '2' to cage[4]" do
-      #   cage = game.instance_variable_get(:@cage)
-      #   expect { game.place_piece(5) }.to change { cage[4].last }.to eq(2)
-      # end
+      it "adds '2' to cage[4]" do
+        cage = game.instance_variable_get(:@cage)
+        expect { game.place_piece(5) }.to change { cage[4].last }.to eq(2)
+      end
     end
   end
 

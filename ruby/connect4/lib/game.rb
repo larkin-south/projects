@@ -35,7 +35,8 @@ class Game
   end
 
   def game_over?
-    vertical_win? || horizontal_win? || left_diagonal_win? || right_diagonal_win? ? true : false
+    vertical_win? || horizontal_win? || right_diagonal_win? ? true : false
+    # left_diagonal_win?
   end
 
   def vertical_win?
@@ -65,30 +66,30 @@ class Game
     pieces
   end
 
-  def left_diagonal_win?
-    regex = @active_player == @p1 ? /1{4}/ : /2{4}/
-    3.times do |row|
-      result = nil
-      4.times do |column|
-        result = left_collect_diagonal_pieces(row, column)
-        return true if result.join.match?(regex)
-      end
-    end
-    false
-  end
+  # def left_diagonal_win?
+  #   regex = @active_player == @p1 ? /1{4}/ : /2{4}/
+  #   3.times do |row|
+  #     result = nil
+  #     4.times do |column|
+  #       result = left_collect_diagonal_pieces(row, column)
+  #       return true if result.join.match?(regex)
+  #     end
+  #   end
+  #   false
+  # end
 
-  def left_collect_diagonal_pieces(row, column)
-    pieces = []
-    pieces << @cage[column][row]
-    until column > 6
-      column += 1
-      row += 1
-      break unless @cage[column][row] == ' ' || !@cage[column][row].nil?
+  # def left_collect_diagonal_pieces(row, column)
+  #   pieces = []
+  #   pieces << @cage[column][row]
+  #   until column > 6
+  #     column += 1
+  #     row += 1
+  #     break unless @cage[column][row] == ' ' || !@cage[column][row].nil?
 
-      pieces << @cage[column][row]
-    end
-    pieces
-  end
+  #     pieces << @cage[column][row]
+  #   end
+  #   pieces
+  # end
 
   def right_diagonal_win?
     regex = @active_player == @p1 ? /1{4}/ : /2{4}/
