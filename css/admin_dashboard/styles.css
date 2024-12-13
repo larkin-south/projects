@@ -42,8 +42,8 @@ li {
 
 .container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(5, 20vh);
+    grid-template-columns: repeat(5);
+    grid-template-rows: repeat(5);
 }
 
 /* .header {
@@ -65,6 +65,10 @@ li {
 
 .header {
     grid-area: 1 / 2 / 2 / 6;
+    /* max-height: 150px; */
+    height: 175px;
+    min-width: 1000px;
+    max-width: 80vw;
 }
 
 .search {
@@ -80,6 +84,7 @@ li {
 
 .profile-name {
     justify-self: start;
+    align-self: end;
     font-family: "robotobold";
 }
 
@@ -105,7 +110,9 @@ li {
     color: white;
     font-family: "robotobold";
     height: 100vh;
-    width: 20vw;
+    min-width: 250px;
+    max-width: 20vw;
+    /* width: 100%; */
 }
 
 .sidebar > * {
@@ -147,6 +154,7 @@ li {
 .content {
     grid-area: 2 / 2 / 6 / 6;
     background-color: rgba(31 169 196 / 0.17);
+    min-width: 80vw;
 }
 
 .head-div {
@@ -171,4 +179,29 @@ li {
 
 .greeting {
     justify-self: start;
+}
+
+#upload {
+    justify-self: center;
+}
+
+#share {
+    justify-self: start;
+}
+
+.head-div > button {
+    background-color: #0ea5e9;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 10px 25px;
+    width: 100px
+}
+
+.head-div > button:hover {
+    background-color: rgba(31 169 196 / 0.85);
+}
+
+.row1, .row2 {
+    margin-top: 15px;
 }
