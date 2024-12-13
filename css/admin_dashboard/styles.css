@@ -46,26 +46,8 @@ li {
     grid-template-rows: repeat(5);
 }
 
-/* .header {
-    display: grid;
-    grid-template-rows: 50px 50px;
-    grid-area: 1 / 2 / 2 / 6;
-    align-items: center;
-    justify-items: end;
-    padding-top: 25px;
-} */
-
-/* .row1 {
-    grid-row: 1 / 2;
-}
-
-.row2 {
-    grid-row: 2 / 3;
-} */
-
 .header {
     grid-area: 1 / 2 / 2 / 6;
-    /* max-height: 150px; */
     height: 175px;
     min-width: 1000px;
     max-width: 80vw;
@@ -112,7 +94,6 @@ li {
     height: 100vh;
     min-width: 250px;
     max-width: 20vw;
-    /* width: 100%; */
 }
 
 .sidebar > * {
@@ -163,7 +144,6 @@ li {
 }
 
 .profile-icon.row2 {
-    /* grid-row: 2 / 4; */
     height: 75px;
     justify-self: end;
     padding-right: 25px;
@@ -172,7 +152,6 @@ li {
 #name {
     font-size: 20px;
     font-weight: bold;
-    /* justify-self: start; */
 }
 
 .greeting {
@@ -205,12 +184,54 @@ li {
 }
 
 .projects {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: start;
+    align-content: start;
     width: 100%;
-    height: 100%;
+    padding: 25px;
+    column-gap: 15px;
+    row-gap: 25px;
+}
+
+.card {
+    background-color: white;
+    padding: 25px 25px;
+    border-left: 5px gold solid;
+    border-radius: 5px;
+    max-height: 165px;
+}
+
+.projects > h3 {
+    grid-column: span 2;
+    font-weight: bold;
+    margin: 0;
+    align-self: end;
+}
+
+.card > p {
+    margin: 0;
+    font-size: .85rem;
+}
+
+.card > h3 {
+    margin: 0 0 10px 0;
 }
 
 .side-content {
     width: 100%;
     height: 100%;
     background-color: red;
+}
+
+.project-svg {
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: end;
+    gap: 25px;
+}
+
+.project-svg > svg {
+    margin-top: 10px;
+    height: 25px;
 }
