@@ -139,10 +139,6 @@ li {
     grid-area: 10 / 1 / 12 / 3;
 }
 
-#gap3 {
-    /* grid-area: 2 / 3 / 3 / 5; */
-}
-
 .sidebar > .logo {
     height: 50px;
 }
@@ -152,6 +148,8 @@ li {
 }
 
 .content {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
     grid-area: 2 / 2 / 6 / 6;
     background-color: rgba(31 169 196 / 0.17);
     min-width: 80vw;
@@ -204,4 +202,15 @@ li {
 
 .row1, .row2 {
     margin-top: 15px;
+}
+
+.projects {
+    width: 100%;
+    height: 100%;
+}
+
+.side-content {
+    width: 100%;
+    height: 100%;
+    background-color: red;
 }
