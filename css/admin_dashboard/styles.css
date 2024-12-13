@@ -185,9 +185,11 @@ li {
 
 .projects {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 50px repeat(3, 2fr);
+    /* grid-template-columns: 50% 50%; */
     justify-content: start;
     align-content: start;
+    height: 100%;
     width: 100%;
     padding: 25px;
     column-gap: 15px;
@@ -195,11 +197,14 @@ li {
 }
 
 .card {
+    display: grid;
+    grid-template-rows: 30px 2fr;
     background-color: white;
     padding: 25px 25px;
     border-left: 5px gold solid;
     border-radius: 5px;
-    max-height: 165px;
+    /* min-height: 175px; */
+    /* max-height: 165px; */
 }
 
 .projects > h3 {
@@ -234,4 +239,5 @@ li {
 .project-svg > svg {
     margin-top: 10px;
     height: 25px;
+    /* align-self: end; */
 }
