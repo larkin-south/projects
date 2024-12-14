@@ -186,15 +186,11 @@ li {
 .projects {
     display: grid;
     grid-template-rows: 50px repeat(3, 2fr);
-    /* grid-template-columns: 50% 50%; */
     justify-content: center;
     align-content: start;
-    /* height: 100%;
-    width: 100%; */
-    padding: 25px 25px 75px 25px;
+    padding: 25px 0 75px 25px;
     column-gap: 15px;
     row-gap: 25px;
-    /* row-gap; */
 }
 
 .card {
@@ -204,8 +200,6 @@ li {
     padding: 25px;
     border-left: 5px gold solid;
     border-radius: 5px;
-    /* min-height: 175px; */
-    /* max-height: 165px; */
 }
 
 .projects > h3 {
@@ -226,15 +220,12 @@ li {
 
 .side-content {
     display: grid;
-    grid-template-rows: 1fr 6fr 1fr 6fr;
-    /* justify-content: center; */
-    /* align-content: start; */
+    grid-template-rows: 50px 6fr 50px 6fr;
     padding: 25px 25px 75px 25px;
     column-gap: 15px;
     row-gap: 25px;
     width: 100%;
     height: 100%;
-    background-color: red;
 }
 
 .project-svg {
@@ -247,16 +238,55 @@ li {
 .project-svg > svg {
     margin-top: 10px;
     height: 25px;
-    /* align-self: end; */
 }
 
 .side-content > h3 {
     align-self: end;
     justify-self: start;
+    margin: 0;
 }
 
 .announcements, .trending {
+    display: grid;
+    justify-content: center;
+    align-content: center;
     background-color: white;
     border-radius: 5px;
-    padding: 25px;
+}
+
+.middle {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+}
+
+.side-content > div {
+    width: 100%;
+}
+
+.side-content:nth-child(2) {
+    align-self: start;
+}
+
+.announcements > div {
+    width: 100%;
+}
+
+.trending {
+    justify-content: start;
+    padding: 15px
+}
+
+.trending > img {
+    grid-column: 1 / 2;
+    margin: 0;
+}
+
+.trending > div {
+    grid-column: 2 / 3;
+    align-self: center;
+}
+
+.trending > div > * {
+    margin: 0;
+    align-self: center;
 }
